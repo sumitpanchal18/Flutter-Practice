@@ -1,75 +1,104 @@
 import 'package:flutter/material.dart';
-import 'package:practice_flutter/utills/MyRoutes.dart';
+import '../utills/DatabaseHelper.dart';
+import 'AddContact.dart';
 
-class HomePage extends StatelessWidget {
+class HomePage extends StatefulWidget {
   const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  // List to hold contacts from the database
+  List<Map<String, dynamic>> contacts = [];
+
+  @override
+  void initState() {
+    super.initState();
+    _loadContacts();  // Load contacts from database when the page is first loaded
+  }
+
+  // Load contacts from the database
+  Future<void> _loadContacts() async {
+    final dbContacts = await DatabaseHelper.instance.getContacts();
+    setState(() {
+      contacts = dbContacts;  // Update the contacts list after fetching from database
+    });
+  }
+
+  // Function to navigate to AddContact page and get the new contact data
+  Future<void> _navigateAndDisplaySelection(BuildContext context) async {
+    // Wait for the AddContact page to return data
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const AddContact()),
+    );
+
+    // If data is returned, insert it into the database and update the UI
+    if (result != null) {
+      await DatabaseHelper.instance.insertContact(result);
+      _loadContacts();  // Refresh contacts list from the database
+    }
+  }
+
+  // Function to delete a contact
+  Future<void> _deleteContact(int id, int index) async {
+    await DatabaseHelper.instance.deleteContact(id);
+    setState(() {
+      contacts.removeAt(index); // Remove the contact from the list
+    });
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Contact deleted')),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Contact List')),
-      drawer: Drawer(
-        clipBehavior: Clip.antiAlias,
-        backgroundColor: Colors.white,
-        width: 250.0,
-        elevation: 10.0,
-        child: ListView(
-          children: [
-            DrawerHeader(
-              decoration: const BoxDecoration(color: Colors.lightBlueAccent),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const SizedBox(height: 10),
-                  Image.asset('assets/images/profile.png',
-                      height: 50, width: 50),
-                  const SizedBox(height: 8),
-                  const Text("Sumit Panchal",
-                      style: TextStyle(fontSize: 25, color: Colors.black)),
-                  const Text("panchalsumit187@gmail.com",
-                      style: TextStyle(fontSize: 15, color: Colors.black)),
-                ],
+      appBar: AppBar(
+        title: const Text("Contact List"),
+      ),
+      body: contacts.isEmpty
+          ? const Center(child: Text('No contacts available'))
+          : ListView.builder(
+        itemCount: contacts.length,
+        itemBuilder: (context, index) {
+          final contact = contacts[index];
+
+          // Use Dismissible to enable swipe-to-delete
+          return Dismissible(
+            key: Key(contact['id'].toString()), // Unique key for each item
+            direction: DismissDirection.endToStart, // Only allow swipe to the right
+            onDismissed: (direction) {
+              _deleteContact(contact['id'], index);
+            },
+            background: Container(
+              color: Colors.red,
+              alignment: Alignment.centerRight,
+              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+              child: const Icon(
+                Icons.delete,
+                color: Colors.white,
               ),
             ),
-            ListTile(
-              leading:
-                  Image.asset('assets/images/home.png', width: 30, height: 30),
-              title: const Text("Home"),
-              onTap: () {},
+            child: Card(
+              margin: const EdgeInsets.all(8.0),
+              child: ListTile(
+                title: Text(contact['name'] ?? ''),
+                subtitle: Text('${contact['email']}\n${contact['phone']}'),
+                isThreeLine: true,
+                trailing: Text(contact['website'] ?? ''),
+              ),
             ),
-            ListTile(
-              leading:
-                  Image.asset('assets/images/call.png', width: 30, height: 30),
-              title: const Text("Call"),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: Image.asset('assets/images/contact.png',
-                  width: 30, height: 30),
-              title: const Text("Contact"),
-              onTap: () {},
-            ),
-            ListTile(
-              leading: Image.asset('assets/images/logout.png',
-                  width: 30, height: 30),
-              title: const Text("Log out"),
-              onTap: () {
-                print("Clicked on logout");
-              },
-            ),
-          ],
-        ),
+          );
+        },
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          // Navigate to AddContact page when FAB is pressed
-          Navigator.pushNamed(context, MyRoutes.contactRoute);
-        },
+        onPressed: () => _navigateAndDisplaySelection(context),
         backgroundColor: Colors.indigo,
-        child: const Icon(
-          Icons.add,
-          color: Colors.white,
-        ),
+        child: const Icon(Icons.add),
       ),
     );
   }
