@@ -1,13 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:practice_flutter/Activity/AddContact.dart';
+import 'package:practice_flutter/utills/ContactProvider.dart';
 import 'package:practice_flutter/utills/MyRoutes.dart';
+import 'package:provider/provider.dart';
 
 import 'Activity/HomePage.dart';
 import 'Activity/LoginPage.dart';
-
 void main() {
-  runApp(const MyApp());
+  runApp(
+    ChangeNotifierProvider(
+      create: (_) => ContactProvider(),
+      child: const MaterialApp(
+        home: HomePage(),
+      ),
+    ),
+  );
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
