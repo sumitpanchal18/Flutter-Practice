@@ -16,16 +16,21 @@ class LoginPage extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
-        body: Container(
-          margin: const EdgeInsets.all(24),
+        body: Padding(
+          padding: const EdgeInsets.all(25.0),
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
               _header(context),
+              const SizedBox(height: 50),
+              // Reduced space between header and input fields
               Obx(() => controller.isLoading.value
                   ? const Center(child: CircularProgressIndicator())
                   : _inputField(context, emailController, passwordController,
                       controller)),
+              const SizedBox(height: 30),
+              // Reduced space between input fields and other widgets
               _forgotPassword(context),
               _signup(context),
             ],
@@ -58,12 +63,12 @@ class LoginPage extends StatelessWidget {
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(18),
                 borderSide: BorderSide.none),
-            fillColor: Colors.purple.withOpacity(0.1),
+            fillColor: Colors.blue.withOpacity(0.1),
             filled: true,
             prefixIcon: const Icon(Icons.email),
           ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 26), // Reduced space between fields
         TextField(
           controller: passwordController,
           decoration: InputDecoration(
@@ -71,13 +76,13 @@ class LoginPage extends StatelessWidget {
             border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(18),
                 borderSide: BorderSide.none),
-            fillColor: Colors.purple.withOpacity(0.1),
+            fillColor: Colors.blue.withOpacity(0.1),
             filled: true,
             prefixIcon: const Icon(Icons.lock),
           ),
           obscureText: true,
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 20),
         ElevatedButton(
           onPressed: () {
             controller.login(emailController.text, passwordController.text);
@@ -85,7 +90,7 @@ class LoginPage extends StatelessWidget {
           style: ElevatedButton.styleFrom(
             shape: const StadiumBorder(),
             padding: const EdgeInsets.symmetric(vertical: 16),
-            backgroundColor: Colors.purple,
+            backgroundColor: Colors.blue,
           ),
           child: const Text(
             "Login",
@@ -103,7 +108,7 @@ class LoginPage extends StatelessWidget {
       },
       child: const Text(
         "Forgot password?",
-        style: TextStyle(color: Colors.purple),
+        style: TextStyle(color: Colors.black, fontSize: 16),
       ),
     );
   }
@@ -115,14 +120,15 @@ class LoginPage extends StatelessWidget {
         const Text("Don't have an account? "),
         TextButton(
           onPressed: () {
-            Navigator.pushReplacementNamed(context, RouteName.signUp);
+            Navigator.pushNamed(context, RouteName.signUp);
           },
           child: const Text(
             "Sign Up",
-            style: TextStyle(color: Colors.purple),
+            style: TextStyle(color: Colors.blue),
           ),
         )
       ],
     );
   }
 }
+
