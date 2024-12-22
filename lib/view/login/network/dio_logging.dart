@@ -4,14 +4,13 @@ class DioLogging {
   static Dio createDio() {
     final dio = Dio();
 
-    // Add built-in LogInterceptor
     dio.interceptors.add(LogInterceptor(
-      request: true, // Log request data
-      requestHeader: true, // Log request headers
-      requestBody: true, // Log request body
-      responseHeader: false, // Skip response headers
-      responseBody: true, // Log response body
-      error: true, // Log errors
+      request: true,
+      requestHeader: true,
+      requestBody: true,
+      responseHeader: false,
+      responseBody: true,
+      error: true,
     ));
 
     return dio;

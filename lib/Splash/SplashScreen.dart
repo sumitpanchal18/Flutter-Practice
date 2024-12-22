@@ -1,10 +1,12 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:practice_flutter/Splash/splash_service.dart';
 
 import '../utills/size_config.dart';
 
 class SplashScreen extends StatefulWidget {
-  const SplashScreen({Key? key}) : super(key: key);
+  const SplashScreen({super.key});
 
   @override
   State<SplashScreen> createState() => _SplashScreenState();
@@ -16,7 +18,10 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   void initState() {
     super.initState();
-    Future.delayed(const Duration(seconds: 5), () {
+    // Future.delayed(const Duration(seconds: 5), () {
+    //   splashService.checkAuthentication(context);
+    // });
+    Timer(const Duration(seconds: 5), () {
       splashService.checkAuthentication(context);
     });
   }

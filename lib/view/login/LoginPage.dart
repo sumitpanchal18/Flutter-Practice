@@ -24,13 +24,11 @@ class LoginPage extends StatelessWidget {
             children: [
               _header(context),
               const SizedBox(height: 50),
-              // Reduced space between header and input fields
               Obx(() => controller.isLoading.value
                   ? const Center(child: CircularProgressIndicator())
                   : _inputField(context, emailController, passwordController,
                       controller)),
               const SizedBox(height: 30),
-              // Reduced space between input fields and other widgets
               _forgotPassword(context),
               _signup(context),
             ],
@@ -101,10 +99,10 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  _forgotPassword(context) {
+  _forgotPassword(BuildContext context) {
     return TextButton(
       onPressed: () {
-        // Add forgot password logic here
+        Navigator.pushNamed(context, RouteName.forgotPassword);
       },
       child: const Text(
         "Forgot password?",
@@ -131,4 +129,3 @@ class LoginPage extends StatelessWidget {
     );
   }
 }
-

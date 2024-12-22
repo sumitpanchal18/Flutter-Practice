@@ -21,7 +21,7 @@ class LoginController extends GetxController {
     try {
       // Call login API
       final LoginDataResponse response =
-          (await repository.login(email, password)) as LoginDataResponse;
+          (await repository.login(email, password));
 
       // Check the response status
       if (response.status == 200) {

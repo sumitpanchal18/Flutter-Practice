@@ -7,7 +7,9 @@ class ApiClient {
 
   ApiClient() : dio = DioLogging.createDio();
 
-  Future<Response> post(String url, {required Map<String, dynamic> data, Map<String, String>? headers}) async {
+  Future<Response> post(String url,
+      {required Map<String, dynamic> data,
+      Map<String, String>? headers}) async {
     try {
       final response = await dio.post(
         url,

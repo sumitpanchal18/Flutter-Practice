@@ -5,13 +5,17 @@ import 'package:practice_flutter/view/SignUp/SignupPage.dart';
 import 'package:practice_flutter/view/login/LoginPage.dart';
 
 import '../view/HomePage.dart';
+import '../view/login/forgotPass/ForgotPasswordPage.dart';
 
 class Routes {
-  static Route<dynamic> genrateRoute(RouteSettings settings) {
+  static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case RouteName.home:
         return MaterialPageRoute(
             builder: (BuildContext context) => const HomePage());
+      case RouteName.forgotPassword:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => const ForgotPasswordPage());
       case RouteName.splash:
         return MaterialPageRoute(
             builder: (BuildContext context) => const SplashScreen());
@@ -20,7 +24,7 @@ class Routes {
             builder: (BuildContext context) => const SignupPage());
       case RouteName.signIn:
         return MaterialPageRoute(
-            builder: (BuildContext context) => LoginPage());
+            builder: (BuildContext context) => const LoginPage());
       default:
         return MaterialPageRoute(
             builder: (BuildContext context) => const HomePage());
