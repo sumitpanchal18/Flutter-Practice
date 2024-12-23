@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart'; // Import Firebase Auth
 import 'package:flutter/material.dart';
 
 import '../../routes/routes_name.dart';
@@ -7,6 +8,10 @@ class SignupPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final emailController = TextEditingController();
+    final passwordController = TextEditingController();
+    final confirmPasswordController = TextEditingController();
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: Scaffold(
@@ -41,17 +46,7 @@ class SignupPage extends StatelessWidget {
                 Column(
                   children: <Widget>[
                     TextField(
-                      decoration: InputDecoration(
-                          hintText: "Username",
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(18),
-                              borderSide: BorderSide.none),
-                          fillColor: Colors.blue.withOpacity(0.1),
-                          filled: true,
-                          prefixIcon: const Icon(Icons.person)),
-                    ),
-                    const SizedBox(height: 20),
-                    TextField(
+                      controller: emailController,
                       decoration: InputDecoration(
                           hintText: "Email",
                           border: OutlineInputBorder(
@@ -63,6 +58,7 @@ class SignupPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     TextField(
+                      controller: passwordController,
                       decoration: InputDecoration(
                         hintText: "Password",
                         border: OutlineInputBorder(
@@ -76,6 +72,7 @@ class SignupPage extends StatelessWidget {
                     ),
                     const SizedBox(height: 20),
                     TextField(
+                      controller: confirmPasswordController,
                       decoration: InputDecoration(
                         hintText: "Confirm Password",
                         border: OutlineInputBorder(
@@ -93,7 +90,15 @@ class SignupPage extends StatelessWidget {
                     padding: const EdgeInsets.only(top: 3, left: 3),
                     child: ElevatedButton(
                       onPressed: () {
-                        Navigator.pushReplacementNamed(context, RouteName.home);
+                        // Validate and Sign up with Firebase
+                        if (passwordController.text ==
+                            confirmPasswordController.text) {
+                          _signupWithFirebase(context, emailController.text,
+                              passwordController.text);
+                        } else {
+                          // Show error if passwords don't match
+                          print('Passwords do not match');
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         shape: const StadiumBorder(),
@@ -170,5 +175,28 @@ class SignupPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  // Function to sign up using Firebase Auth
+  void _signupWithFirebase(
+      BuildContext context, String email, String password) async {
+    try {
+      final FirebaseAuth _auth = FirebaseAuth.instance;
+      UserCredential userCredential =
+          await _auth.createUserWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      print('Sign-up successful: ${userCredential.user?.email}');
+      // Navigate to home page or other page after successful sign up
+      Navigator.pushReplacementNamed(
+          context, RouteName.home); // Modify if needed
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'weak-password') {
+        print('The password provided is too weak.');
+      } else if (e.code == 'email-already-in-use') {
+        print('The account already exists for that email.');
+      }
+    }
   }
 }

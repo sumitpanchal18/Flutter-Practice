@@ -1,5 +1,7 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:fluttertoast/fluttertoast.dart'; // Import fluttertoast
 import 'package:practice_flutter/routes/routes_name.dart';
 
 import 'controllers/login_controller.dart';
@@ -13,32 +15,30 @@ class LoginPage extends StatelessWidget {
     final passwordController = TextEditingController();
     final controller = Get.find<LoginController>();
 
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: Scaffold(
-        body: Padding(
-          padding: const EdgeInsets.all(25.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              _header(context),
-              const SizedBox(height: 50),
-              Obx(() => controller.isLoading.value
+    return Scaffold(
+      body: Padding(
+        padding: const EdgeInsets.all(25.0),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            _header(),
+            const SizedBox(height: 50),
+            Obx(() {
+              return controller.isLoading.value
                   ? const Center(child: CircularProgressIndicator())
-                  : _inputField(context, emailController, passwordController,
-                      controller)),
-              const SizedBox(height: 30),
-              _forgotPassword(context),
-              _signup(context),
-            ],
-          ),
+                  : _inputField(context, emailController, passwordController);
+            }),
+            const SizedBox(height: 30),
+            _forgotPassword(context),
+            _signup(context),
+          ],
         ),
       ),
     );
   }
 
-  _header(context) {
+  _header() {
     return const Column(
       children: [
         Text(
@@ -50,7 +50,7 @@ class LoginPage extends StatelessWidget {
   }
 
   _inputField(BuildContext context, TextEditingController emailController,
-      TextEditingController passwordController, LoginController controller) {
+      TextEditingController passwordController) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -66,7 +66,7 @@ class LoginPage extends StatelessWidget {
             prefixIcon: const Icon(Icons.email),
           ),
         ),
-        const SizedBox(height: 26), // Reduced space between fields
+        const SizedBox(height: 26),
         TextField(
           controller: passwordController,
           decoration: InputDecoration(
@@ -83,8 +83,8 @@ class LoginPage extends StatelessWidget {
         const SizedBox(height: 20),
         ElevatedButton(
           onPressed: () {
-            controller.login(emailController.text, passwordController.text);
-            Navigator.pushNamed(context, RouteName.connectionChecker);
+            _loginWithFirebase(
+                context, emailController.text, passwordController.text);
           },
           style: ElevatedButton.styleFrom(
             shape: const StadiumBorder(),
@@ -100,6 +100,60 @@ class LoginPage extends StatelessWidget {
     );
   }
 
+  // Function to login using Firebase
+  void _loginWithFirebase(
+      BuildContext context, String email, String password) async {
+    try {
+      final FirebaseAuth _auth = FirebaseAuth.instance;
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      // Show success toast
+      Fluttertoast.showToast(
+        msg: 'Login successful: ${userCredential.user?.email}',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+      );
+      Navigator.pushReplacementNamed(context, RouteName.home);
+    } on FirebaseAuthException catch (e) {
+      String message = '';
+      if (e.code == 'user-not-found') {
+        message = 'No user found for that email.';
+      } else if (e.code == 'wrong-password') {
+        message = 'Wrong password provided.';
+      }
+      // Show error toast
+      Fluttertoast.showToast(
+        msg: message,
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+        timeInSecForIosWeb: 1,
+      );
+      _showErrorDialog(context, message);
+    }
+  }
+
+  // Function to show error dialog
+  void _showErrorDialog(BuildContext context, String message) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Error'),
+          content: Text(message),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   _forgotPassword(BuildContext context) {
     return TextButton(
       onPressed: () {
@@ -112,7 +166,7 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  _signup(context) {
+  _signup(BuildContext context) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
