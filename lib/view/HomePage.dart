@@ -1,7 +1,9 @@
 import 'dart:convert';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:practice_flutter/routes/routes_name.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -30,6 +32,7 @@ class _HomePageState extends State<HomePage> {
         key: _scaffoldKey,
         appBar: buildAppBar(context),
         drawer: buildDrawer(context),
+        bottomNavigationBar: buildBottomNavBar(context),
         body: _products.isEmpty
             ? const Center(child: CircularProgressIndicator())
             : ListView.builder(
@@ -176,14 +179,30 @@ class _HomePageState extends State<HomePage> {
           ),
           ListTile(
             leading: const Icon(Icons.login),
-            title: const Text('Login'),
+            title: const Text('LogOut'),
             onTap: () {
-              Navigator.pushNamed(context, '/login');
+              _logout(context);
+              Navigator.pushReplacementNamed(context, RouteName.signIn);
             },
           ),
         ],
       ),
     );
+  }
+
+  Future<void> _logout(BuildContext context) async {
+    try {
+      await FirebaseAuth.instance.signOut(); // Logs out the user from Firebase
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('You have logged out successfully!')),
+      );
+      // Optionally, you can navigate to the login page
+      // Navigator.pushReplacementNamed(context, '/login');
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error logging out: $e')),
+      );
+    }
   }
 
   AppBar buildAppBar(BuildContext context) {
@@ -244,4 +263,42 @@ class _HomePageState extends State<HomePage> {
       ],
     );
   }
+
+  buildBottomNavBar(BuildContext context) {
+    return BottomNavigationBar(
+      currentIndex: 0, // Set this dynamically based on selected tab
+      onTap: (index) {
+        // Handle tab selection
+        switch (index) {
+          case 0:
+            Navigator.pushNamed(context, '/home');
+            break;
+          case 1:
+            Navigator.pushNamed(context, '/search');
+            break;
+          case 2:
+            Navigator.pushNamed(context, '/profile');
+            break;
+        }
+      },
+      items: const [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: 'Home',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.search),
+          label: 'Search',
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person),
+          label: 'Profile',
+        ),
+      ],
+      selectedItemColor: Colors.blue, // Highlight color for selected tab
+      unselectedItemColor: Colors.grey, // Color for unselected tabs
+      showUnselectedLabels: false, // Whether to show labels for unselected tabs
+    );
+  }
+
 }

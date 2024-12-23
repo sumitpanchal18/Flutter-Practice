@@ -1,3 +1,4 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:get/get.dart';
@@ -8,11 +9,20 @@ import 'package:practice_flutter/view/login/controllers/login_controller.dart';
 import 'package:practice_flutter/view/login/network/api_client.dart';
 import 'package:practice_flutter/view/login/repository/login_repository.dart';
 
-void main() {
+void main() async {
   final apiClient = ApiClient();
+
+  // Login
   final loginRepository = LoginRepository(apiClient);
   Get.put(LoginController(loginRepository));
+
+  // Forgot Password
   Get.put(ForgotPasswordController());
+
+  // Firebase
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp();
+
 
   runApp(const MyApp());
 }
