@@ -1,14 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:practice_flutter/Splash/SplashScreen.dart';
-import 'package:practice_flutter/utills/MyRoutes.dart';
-import 'Activity/HomePage.dart';
-import 'Activity/LoginPage.dart';
+import 'package:get/get.dart';
+import 'package:practice_flutter/routes/routes.dart';
+import 'package:practice_flutter/routes/routes_name.dart';
+import 'package:practice_flutter/view/login/controllers/ForgotPasswordController.dart';
+import 'package:practice_flutter/view/login/controllers/login_controller.dart';
+import 'package:practice_flutter/view/login/network/api_client.dart';
+import 'package:practice_flutter/view/login/repository/login_repository.dart';
 
 void main() {
-  runApp(
-    const MyApp(),
-  );
+  final apiClient = ApiClient();
+  final loginRepository = LoginRepository(apiClient);
+  Get.put(LoginController(loginRepository));
+  Get.put(ForgotPasswordController());
+
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
@@ -18,13 +24,10 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     debugPaintSizeEnabled = false;
     return MaterialApp(
+      title: 'Flutter',
       debugShowCheckedModeBanner: false,
-      initialRoute: MyRoutes.splashRoute,
-      routes: {
-        MyRoutes.homeRoute: (context) => const HomePage(),
-        MyRoutes.loginRoute: (context) => const LoginPage(),
-        MyRoutes.splashRoute: (context) => const SplashScreen(),
-      },
+      initialRoute: RouteName.splash,
+      onGenerateRoute: Routes.generateRoute,
       themeMode: ThemeMode.light,
       theme: ThemeData(
         brightness: Brightness.light,
