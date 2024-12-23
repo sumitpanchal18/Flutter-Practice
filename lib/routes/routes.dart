@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:practice_flutter/Splash/SplashScreen.dart';
 import 'package:practice_flutter/routes/routes_name.dart';
 import 'package:practice_flutter/view/SignUp/SignupPage.dart';
+import 'package:practice_flutter/view/internetCheck/ConnectivityCheckScreen.dart';
 import 'package:practice_flutter/view/login/LoginPage.dart';
 
 import '../view/HomePage.dart';
@@ -16,6 +17,9 @@ class Routes {
       case RouteName.forgotPassword:
         return MaterialPageRoute(
             builder: (BuildContext context) => const ForgotPasswordPage());
+      case RouteName.connectionChecker:
+        return MaterialPageRoute(
+            builder: (BuildContext context) => ConnectivityCheckScreen());
       case RouteName.splash:
         return MaterialPageRoute(
             builder: (BuildContext context) => const SplashScreen());

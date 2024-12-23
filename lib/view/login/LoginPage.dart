@@ -84,6 +84,7 @@ class LoginPage extends StatelessWidget {
         ElevatedButton(
           onPressed: () {
             controller.login(emailController.text, passwordController.text);
+            Navigator.pushNamed(context, RouteName.connectionChecker);
           },
           style: ElevatedButton.styleFrom(
             shape: const StadiumBorder(),

@@ -37,6 +37,7 @@ dependencies:
   provider:
   dio: ^5.3.1
   get: ^4.6.6
+  connectivity_plus: ^4.0.0
   flutter_secure_storage: ^8.0.0
   flutter_bloc: ^8.1.1
 
