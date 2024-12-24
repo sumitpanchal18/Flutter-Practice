@@ -1,4 +1,4 @@
 class ApiEndpoints {
-  static const baseUrl = "http://54.211.252.139/gf-hotel-web/api";
-  static const login = "$baseUrl/login";
+  static const baseUrl = "https://zbkrp2j2yc.execute-api.us-east-1.amazonaws.com";
+  static const login = "$baseUrl/users/login";
 }

@@ -42,7 +42,7 @@ dependencies:
   flutter_bloc: ^8.1.1
   firebase_core:
   firebase_auth:
-
+  shared_preferences:
 
 
   # The following adds the Cupertino Icons font to your application.

@@ -6,7 +6,7 @@ import 'package:practice_flutter/view/internetCheck/ConnectivityCheckScreen.dart
 import 'package:practice_flutter/view/login/LoginPage.dart';
 
 import '../view/HomePage.dart';
-import '../view/login/forgotPass/ForgotPasswordPage.dart';
+import '../view/forgotPass/ForgotPasswordPage.dart';
 
 class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {

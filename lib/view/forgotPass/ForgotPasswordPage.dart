@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../controllers/ForgotPasswordController.dart';
+import '../login/controllers/ForgotPasswordController.dart';
+
 
 class ForgotPasswordPage extends StatelessWidget {
   const ForgotPasswordPage({super.key});
