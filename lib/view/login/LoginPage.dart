@@ -13,49 +13,50 @@ class LoginPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final emailController = TextEditingController();
     final passwordController = TextEditingController();
-    final isPasswordVisible = false.obs; // Observable for password visibility
+    final isPasswordVisible = false.obs;
     final controller = Get.find<LoginController>();
 
-    // Fetch screen dimensions for responsive design
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(
-            horizontal: screenWidth * 0.08, // 8% of screen width
-            vertical: screenHeight * 0.02, // 2% of screen height
-          ),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              SizedBox(height: screenHeight * 0.1), // 10% of screen height
-              _header(),
-              SizedBox(height: screenHeight * 0.05), // 5% of screen height
-              Obx(() {
-                return controller.isLoading.value
-                    ? const Center(child: CircularProgressIndicator())
-                    : _inputField(
-                        context,
-                        emailController,
-                        passwordController,
-                        screenWidth,
-                        isPasswordVisible,
-                      );
-              }),
-              SizedBox(height: screenHeight * 0.03), // 3% of screen height
-              _forgotPassword(context),
-              _signup(context),
-            ],
+      body: Center(
+        child: SingleChildScrollView(
+          child: Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: screenWidth * 0.08,
+              vertical: screenHeight * 0.02,
+            ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                SizedBox(height: screenHeight * 0.1),
+                _header(),
+                SizedBox(height: screenHeight * 0.05),
+                Obx(() {
+                  return controller.isLoading.value
+                      ? const Center(child: CircularProgressIndicator())
+                      : _inputField(
+                          context,
+                          emailController,
+                          passwordController,
+                          screenWidth,
+                          isPasswordVisible,
+                        );
+                }),
+                SizedBox(height: screenHeight * 0.03),
+                _forgotPassword(context),
+                _signup(context),
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
-  _header() {
+  Widget _header() {
     return const Column(
       children: [
         Text(
@@ -69,7 +70,7 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  _inputField(
+  Widget _inputField(
     BuildContext context,
     TextEditingController emailController,
     TextEditingController passwordController,
@@ -79,65 +80,162 @@ class LoginPage extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        TextField(
+        _buildTextField(
           controller: emailController,
-          decoration: InputDecoration(
-            hintText: "Email",
-            border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(18),
-              borderSide: BorderSide.none,
+          hintText: "Email",
+          icon: Icons.email,
+        ),
+        SizedBox(height: screenWidth * 0.05),
+        _buildTextField(
+          controller: passwordController,
+          hintText: "Password",
+          icon: Icons.lock,
+          obscureText: !isPasswordVisible.value,
+          suffixIcon: IconButton(
+            icon: Icon(
+              isPasswordVisible.value ? Icons.visibility : Icons.visibility_off,
             ),
-            fillColor: Colors.blue.withOpacity(0.1),
-            filled: true,
-            prefixIcon: const Icon(Icons.email),
+            onPressed: () {
+              isPasswordVisible.value = !isPasswordVisible.value;
+            },
           ),
         ),
-        SizedBox(height: screenWidth * 0.05), // 5% of screen width
-        Obx(() {
-          return TextField(
-            controller: passwordController,
-            obscureText: !isPasswordVisible.value, // Hide or show password
-            decoration: InputDecoration(
-              hintText: "Password",
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(18),
-                borderSide: BorderSide.none,
-              ),
-              fillColor: Colors.blue.withOpacity(0.1),
-              filled: true,
-              prefixIcon: const Icon(Icons.lock),
-              suffixIcon: IconButton(
-                icon: Icon(
-                  isPasswordVisible.value
-                      ? Icons.visibility
-                      : Icons.visibility_off,
-                ),
-                onPressed: () {
-                  isPasswordVisible.value = !isPasswordVisible.value;
-                },
+        SizedBox(height: screenWidth * 0.06),
+        _loginButton(context, emailController, passwordController),
+        SizedBox(height: screenWidth * 0.02),
+        const Center(child: Text("Or")),
+        SizedBox(height: screenWidth * 0.02),
+        _googleSignInButton(),
+      ],
+    );
+  }
+
+  // Helper method to build text fields
+  Widget _buildTextField({
+    required TextEditingController controller,
+    required String hintText,
+    required IconData icon,
+    bool obscureText = false,
+    Widget? suffixIcon,
+  }) {
+    return TextField(
+      controller: controller,
+      obscureText: obscureText,
+      decoration: InputDecoration(
+        hintText: hintText,
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(18),
+          borderSide: BorderSide.none,
+        ),
+        fillColor: Colors.blue.withOpacity(0.1),
+        filled: true,
+        prefixIcon: Icon(icon),
+        suffixIcon: suffixIcon,
+      ),
+    );
+  }
+
+  // Login button widget
+  Widget _loginButton(
+    BuildContext context,
+    TextEditingController emailController,
+    TextEditingController passwordController,
+  ) {
+    return ElevatedButton(
+      onPressed: () {
+        _loginWithFirebase(
+            context, emailController.text, passwordController.text);
+      },
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.blue,
+      ),
+      child: const Text(
+        "Login",
+        style: TextStyle(fontSize: 20, color: Colors.white),
+      ),
+    );
+  }
+
+  // Google Sign-In Button widget
+  Widget _googleSignInButton() {
+    return Container(
+      height: 45,
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(25),
+        border: Border.all(color: Colors.blue),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.white.withOpacity(0.5),
+            spreadRadius: 1,
+            blurRadius: 1,
+            offset: const Offset(0, 1), // changes position of shadow
+          ),
+        ],
+      ),
+      child: TextButton(
+        onPressed: () {
+          // Google sign-in logic here
+        },
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Container(
+              height: 30.0,
+              width: 30.0,
+              decoration: const BoxDecoration(
+                image: DecorationImage(
+                    image: AssetImage('assets/images/google.png'),
+                    fit: BoxFit.cover),
+                shape: BoxShape.circle,
               ),
             ),
-          );
-        }),
-        SizedBox(height: screenWidth * 0.04), // 4% of screen width
-        ElevatedButton(
+            const SizedBox(width: 18),
+            const Text(
+              "Sign In with Google",
+              style: TextStyle(
+                fontSize: 16,
+                color: Colors.blue,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  // Forgot password link widget
+  Widget _forgotPassword(BuildContext context) {
+    return TextButton(
+      onPressed: () {
+        Navigator.pushNamed(context, RouteName.forgotPassword);
+      },
+      child: const Text(
+        "Forgot password?",
+        style: TextStyle(color: Colors.black, fontSize: 16),
+      ),
+    );
+  }
+
+  // Sign up link widget
+  Widget _signup(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        const Text("Don't have an account?"),
+        TextButton(
           onPressed: () {
-            _loginWithFirebase(
-                context, emailController.text, passwordController.text);
+            Navigator.pushNamed(context, RouteName.signUp);
           },
-          style: ElevatedButton.styleFrom(
-            backgroundColor: Colors.blue,
-          ),
           child: const Text(
-            "Login",
-            style: TextStyle(fontSize: 20, color: Colors.white),
+            "Sign Up",
+            style: TextStyle(color: Colors.blue),
           ),
         )
       ],
     );
   }
 
-  // Function to login using Firebase
+  // Firebase login logic
   void _loginWithFirebase(
       BuildContext context, String email, String password) async {
     try {
@@ -161,7 +259,6 @@ class LoginPage extends StatelessWidget {
       } else if (e.code == 'wrong-password') {
         message = 'Wrong password provided.';
       }
-      // Show error toast
       Fluttertoast.showToast(
         msg: message,
         toastLength: Toast.LENGTH_SHORT,
@@ -169,35 +266,5 @@ class LoginPage extends StatelessWidget {
         timeInSecForIosWeb: 1,
       );
     }
-  }
-
-  _forgotPassword(BuildContext context) {
-    return TextButton(
-      onPressed: () {
-        Navigator.pushNamed(context, RouteName.forgotPassword);
-      },
-      child: const Text(
-        "Forgot password?",
-        style: TextStyle(color: Colors.black, fontSize: 16),
-      ),
-    );
-  }
-
-  _signup(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
-      children: [
-        const Text("Don't have an account? "),
-        TextButton(
-          onPressed: () {
-            Navigator.pushNamed(context, RouteName.signUp);
-          },
-          child: const Text(
-            "Sign Up",
-            style: TextStyle(color: Colors.blue),
-          ),
-        )
-      ],
-    );
   }
 }
