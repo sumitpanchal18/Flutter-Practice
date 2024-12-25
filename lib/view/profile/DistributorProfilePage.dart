@@ -80,9 +80,12 @@ class DistributorProfilePage extends StatelessWidget {
             const SizedBox(height: 6),
             _buildInfoRow(
                 Strings.distributorId, "#${distributor.distributorId}"),
-            _buildInfoRow(Strings.rank, "${distributor.binaryRank}\n${distributor.binaryRank}" ),
-            _buildInfoRow(Strings.sponsor, "${distributor.sponsorName} (#${distributor.sponsorId})"),
-            _buildInfoRow(Strings.placement, "${distributor.placementName} (#${distributor.sponsorId})"),
+            _buildInfoRow(Strings.rank,
+                "${distributor.binaryRank}\n${distributor.unilevelRank}"),
+            _buildInfoRow(Strings.sponsor,
+                "${distributor.sponsorName} (#${distributor.sponsorId})"),
+            _buildInfoRow(Strings.placement,
+                "${distributor.placementName} (#${distributor.sponsorId})"),
             _buildInfoRow(Strings.enrollmentDate, distributor.enrollmentDate),
             _buildInfoRow(Strings.lastOrderDate, distributor.last_order_date),
             const SizedBox(height: 16),
@@ -96,8 +99,24 @@ class DistributorProfilePage extends StatelessWidget {
             _buildInfoRow(Strings.companyName, Strings.dash),
             _buildInfoRow(Strings.companyWebsite, Strings.dash),
             _buildInfoRow(Strings.dateOfBirth, Strings.dash),
-            _buildInfoRow(
-                Strings.distributorWebsite, distributor.distributorWebsite),
+            Row(
+              children: [
+                Expanded(
+                  child: _buildInfoRow(Strings.distributorWebsite,
+                      distributor.distributorWebsite),
+                ),
+                IconButton(
+                  icon: const Icon(
+                    Icons.share,
+                    color: Colors.black,
+                    size: 15,
+                  ),
+                  onPressed: () {
+                    // Handle share action
+                  },
+                ),
+              ],
+            ),
             const SizedBox(height: 16),
             const Text(
               Strings.otherInformation,
