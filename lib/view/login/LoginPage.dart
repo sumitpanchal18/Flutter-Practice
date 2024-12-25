@@ -1,21 +1,32 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:fluttertoast/fluttertoast.dart'; // Import fluttertoast
 import 'package:get/get.dart';
 import 'package:practice_flutter/routes/routes_name.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'controllers/login_controller.dart';
 
-class LoginPage extends StatelessWidget {
+class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final emailController = TextEditingController();
-    final passwordController = TextEditingController();
-    final isPasswordVisible = false.obs;
-    final controller = Get.find<LoginController>();
+  _LoginPageState createState() => _LoginPageState();
+}
 
+class _LoginPageState extends State<LoginPage> {
+  final emailController = TextEditingController();
+  final passwordController = TextEditingController();
+  final isPasswordVisible = false.obs;
+  final controller = Get.find<LoginController>();
+  bool rememberMe = false;  // To track the checkbox status
+
+  @override
+  void initState() {
+    super.initState();
+    _loadSavedCredentials();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    // Fetch screen dimensions for responsive design
     final screenHeight = MediaQuery.of(context).size.height;
     final screenWidth = MediaQuery.of(context).size.width;
 
@@ -38,12 +49,9 @@ class LoginPage extends StatelessWidget {
                   return controller.isLoading.value
                       ? const Center(child: CircularProgressIndicator())
                       : _inputField(
-                          context,
-                          emailController,
-                          passwordController,
-                          screenWidth,
-                          isPasswordVisible,
-                        );
+                    context,
+                    screenWidth,
+                  );
                 }),
                 SizedBox(height: screenHeight * 0.03),
                 _forgotPassword(context),
@@ -70,13 +78,7 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  Widget _inputField(
-    BuildContext context,
-    TextEditingController emailController,
-    TextEditingController passwordController,
-    double screenWidth,
-    RxBool isPasswordVisible,
-  ) {
+  Widget _inputField(BuildContext context, double screenWidth) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
@@ -101,7 +103,20 @@ class LoginPage extends StatelessWidget {
           ),
         ),
         SizedBox(height: screenWidth * 0.06),
-        _loginButton(context, emailController, passwordController),
+        Row(
+          children: [
+            Checkbox(
+              value: rememberMe,
+              onChanged: (value) {
+                setState(() {
+                  rememberMe = value ?? false;
+                });
+              },
+            ),
+            const Text("Remember Me"),
+          ],
+        ),
+        _loginButton(context),
         SizedBox(height: screenWidth * 0.02),
         const Center(child: Text("Or")),
         SizedBox(height: screenWidth * 0.02),
@@ -136,15 +151,21 @@ class LoginPage extends StatelessWidget {
   }
 
   // Login button widget
-  Widget _loginButton(
-    BuildContext context,
-    TextEditingController emailController,
-    TextEditingController passwordController,
-  ) {
+  Widget _loginButton(BuildContext context) {
     return ElevatedButton(
-      onPressed: () {
-        _loginWithFirebase(
-            context, emailController.text, passwordController.text);
+      onPressed: () async {
+        // Save credentials if "Remember Me" is checked
+        if (rememberMe) {
+          await _saveCredentials(emailController.text, passwordController.text);
+        }
+
+        controller.login(
+          context,
+          emailController.text,
+          passwordController.text,
+          "",
+          false,
+        );
       },
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.blue,
@@ -235,36 +256,28 @@ class LoginPage extends StatelessWidget {
     );
   }
 
-  // Firebase login logic
-  void _loginWithFirebase(
-      BuildContext context, String email, String password) async {
-    try {
-      final FirebaseAuth _auth = FirebaseAuth.instance;
-      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
-        email: email,
-        password: password,
-      );
-      // Show success toast
-      Fluttertoast.showToast(
-        msg: 'Login successful: ${userCredential.user?.email}',
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-      );
-      Navigator.pushReplacementNamed(context, RouteName.home);
-    } on FirebaseAuthException catch (e) {
-      String message = '';
-      if (e.code == 'user-not-found') {
-        message = 'No user found for that email.';
-      } else if (e.code == 'wrong-password') {
-        message = 'Wrong password provided.';
-      }
-      Fluttertoast.showToast(
-        msg: message,
-        toastLength: Toast.LENGTH_SHORT,
-        gravity: ToastGravity.BOTTOM,
-        timeInSecForIosWeb: 1,
-      );
+  // Method to save email and password
+  Future<void> _saveCredentials(String email, String password) async {
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setString('email', email);
+    await prefs.setString('password', password);
+    print("Credentials Saved: Email = $email, Password = $password");
+  }
+
+  // Method to load saved email and password
+  Future<void> _loadSavedCredentials() async {
+    final prefs = await SharedPreferences.getInstance();
+    final savedEmail = prefs.getString('email');
+    final savedPassword = prefs.getString('password');
+
+    print("Saved Credentials: Email = $savedEmail, Password = $savedPassword");
+
+    if (savedEmail != null && savedPassword != null) {
+      emailController.text = savedEmail;
+      passwordController.text = savedPassword;
+      setState(() {
+        rememberMe = true;
+      });
     }
   }
 }

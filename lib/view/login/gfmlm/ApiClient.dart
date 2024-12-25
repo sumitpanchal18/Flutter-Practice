@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 
-import 'dio_logging.dart';
+import '../network/dio_logging.dart';
 
 class ApiClient {
   final Dio dio;

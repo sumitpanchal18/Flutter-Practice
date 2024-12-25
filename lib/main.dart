@@ -6,8 +6,10 @@ import 'package:practice_flutter/routes/routes.dart';
 import 'package:practice_flutter/routes/routes_name.dart';
 import 'package:practice_flutter/view/login/controllers/ForgotPasswordController.dart';
 import 'package:practice_flutter/view/login/controllers/login_controller.dart';
-import 'package:practice_flutter/view/login/network/api_client.dart';
+import 'package:practice_flutter/view/login/gfmlm/ApiClient.dart';
 import 'package:practice_flutter/view/login/repository/login_repository.dart';
+import 'package:practice_flutter/view/profile/DistributorController.dart';
+import 'package:practice_flutter/view/profile/DistributorRepository.dart';
 
 void main() async {
   final apiClient = ApiClient();
@@ -15,6 +17,9 @@ void main() async {
   // Login
   final loginRepository = LoginRepository(apiClient);
   Get.put(LoginController(loginRepository));
+
+  final profileRepo = DistributorRepository();
+  Get.put(DistributorController(repository: profileRepo));
 
   // Forgot Password
   Get.put(ForgotPasswordController());
