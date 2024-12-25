@@ -8,6 +8,8 @@ import 'package:practice_flutter/view/login/controllers/ForgotPasswordController
 import 'package:practice_flutter/view/login/controllers/login_controller.dart';
 import 'package:practice_flutter/view/login/gfmlm/ApiClient.dart';
 import 'package:practice_flutter/view/login/repository/login_repository.dart';
+import 'package:practice_flutter/view/profile/DistributorController.dart';
+import 'package:practice_flutter/view/profile/DistributorRepository.dart';
 
 void main() async {
   final apiClient = ApiClient();
@@ -16,13 +18,15 @@ void main() async {
   final loginRepository = LoginRepository(apiClient);
   Get.put(LoginController(loginRepository));
 
+  final profileRepo = DistributorRepository();
+  Get.put(DistributorController(repository: profileRepo));
+
   // Forgot Password
   Get.put(ForgotPasswordController());
 
   // Firebase
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-
 
   runApp(const MyApp());
 }

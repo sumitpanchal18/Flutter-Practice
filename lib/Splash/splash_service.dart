@@ -11,7 +11,7 @@ class SplashService {
     if (user != null) {
       Navigator.pushReplacementNamed(context, RouteName.home);
     } else {
-      Navigator.pushReplacementNamed(context, RouteName.signIn);
+      Navigator.pushReplacementNamed(context, RouteName.home);
     }
   }
 }

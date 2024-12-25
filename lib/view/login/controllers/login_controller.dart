@@ -29,7 +29,6 @@ class LoginController extends GetxController {
         if (result != null && result.headerToken != null) {
           await HeadersManager.saveToken(result.headerToken!);
         }
-
         loginMessage.value = response.message ?? "Login successful!";
         Get.snackbar("hurry..!", "Login successful!");
         Navigator.pushReplacementNamed(context, RouteName.home);

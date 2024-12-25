@@ -1,5 +1,35 @@
-class AppStrings {
-  static const appTitle = "Enterprise App";
-  static const loginSuccess = "Login Successful!";
-  static const loginFailed = "Login Failed. Please try again.";
+class Strings {
+  static const distributorProfile = "Distributor Profile";
+  static const activeStatus = "Active";
+  static const distributorInformation = "Distributor Information";
+  static const distributorId = "Distributor ID";
+  static const rank = "Rank";
+  static const sponsor = "Sponsor";
+  static const placement = "Placement";
+  static const enrollmentDate = "Enrollment Date";
+  static const lastOrderDate = "Last Order Date";
+  static const personalInformation = "Personal Information";
+  static const mobile = "Mobile";
+  static const email = "Email";
+  static const companyName = "Company Name";
+  static const companyWebsite = "Company Website";
+  static const dateOfBirth = "Date Of Birth";
+  static const distributorWebsite = "Distributor Website";
+  static const otherInformation = "Other Information";
+  static const directorQualified = "Director Qualified";
+  static const resellerQualified = "Reseller Qualified";
+  static const defaultLanguage = "Default Language";
+  static const defaultCurrency = "Default Currency";
+  static const timeZone = "Time Zone";
+  static const defaultDateFormat = "Default Date Format";
+  static const taxIdentifier = "Tax Identifier";
+  static const country = "Country";
+  static const incomeTaxType = "Income Tax Type";
+  static const taxId = "Tax ID";
+  static const billingAddress = "Billing Address";
+  static const address1 = "Address 1";
+  static const address2 = "Address 2";
+  static const city = "City";
+  static const shippingAddress = "Shipping Address";
+  static const nA = "N/A";
 }

@@ -7,6 +7,8 @@ import 'package:practice_flutter/Splash/SplashScreen.dart';
 import 'package:practice_flutter/routes/routes_name.dart';
 import 'package:practice_flutter/view/dashboard/DashboardScreen.dart';
 import 'package:practice_flutter/view/login/LoginPage.dart';
+import 'package:practice_flutter/view/profile/DistributorProfilePage.dart';
+import 'package:practice_flutter/view/profile/list/DistributorListScreen.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -39,13 +41,12 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: buildBottomNavBar(context),
       body: Stack(
         children: [
-          _selectedIndex == 0
-              ? _buildProductList()
-              : _selectedIndex == 1
-                  ? const DashboardScreen()
-                  : const SplashScreen(),
+          if (_selectedIndex == 0) _buildProductList(),
+          if (_selectedIndex == 1) const DashboardScreen(),
+          if (_selectedIndex == 2) DistributorListScreen(),
         ],
       ),
+
     );
   }
 
@@ -295,7 +296,7 @@ class _HomePageState extends State<HomePage> {
         ),
         BottomNavigationBarItem(
           icon: Icon(Icons.ac_unit_rounded),
-          label: 'Splash',
+          label: 'Profile',
         ),
       ],
       selectedItemColor: Colors.blue,
