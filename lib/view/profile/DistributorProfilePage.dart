@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 
 import '../../utills/constants/app_strings.dart';
+import 'Distributor.dart';
 
 class DistributorProfilePage extends StatelessWidget {
-  final dynamic distributor;
+  final Distributor distributor;
 
   // Constructor to accept distributor data
   const DistributorProfilePage({super.key, required this.distributor});
@@ -34,8 +35,8 @@ class DistributorProfilePage extends StatelessWidget {
                     ),
                     child: Center(
                       child: Text(
-                        distributor['fullName']?.isNotEmpty ?? false
-                            ? '${distributor['fullName'].split(" ")[0][0].toUpperCase()}${distributor['fullName'].split(" ").length > 1 ? distributor['fullName'].split(" ")[1][0].toUpperCase() : ''}'
+                        distributor.fullName.isNotEmpty
+                            ? '${distributor.fullName.split(" ")[0][0].toUpperCase()}${distributor.fullName.split(" ").length > 1 ? distributor.fullName.split(" ")[1][0].toUpperCase() : ''}'
                             : Strings.nA,
                         style:
                             const TextStyle(fontSize: 32, color: Colors.white),
@@ -44,7 +45,7 @@ class DistributorProfilePage extends StatelessWidget {
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    distributor['fullName'] ?? '',
+                    distributor.fullName,
                     style: const TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.bold,
@@ -52,7 +53,7 @@ class DistributorProfilePage extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
                   Text(
-                    "ID: #${distributor['distributorId'] ?? Strings.nA}",
+                    "ID: #${distributor.distributorId}",
                     style: const TextStyle(fontSize: 14, color: Colors.grey),
                   ),
                   const SizedBox(height: 5),
@@ -77,79 +78,65 @@ class DistributorProfilePage extends StatelessWidget {
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 6),
-            _buildInfoRow(Strings.distributorId,
-                "#${distributor['distributorId'] ?? Strings.nA}"),
             _buildInfoRow(
-                Strings.rank, distributor['binaryRank'] ?? Strings.nA),
-            _buildInfoRow(
-                Strings.sponsor, distributor['sponsorName'] ?? Strings.nA),
-            _buildInfoRow(
-                Strings.placement, distributor['placementName'] ?? Strings.nA),
-            _buildInfoRow(Strings.enrollmentDate,
-                distributor['enrollmentDate'] ?? Strings.nA),
-            _buildInfoRow(Strings.lastOrderDate,
-                distributor['last_order_date'] ?? Strings.nA),
+                Strings.distributorId, "#${distributor.distributorId}"),
+            _buildInfoRow(Strings.rank, "${distributor.binaryRank}\n${distributor.binaryRank}" ),
+            _buildInfoRow(Strings.sponsor, "${distributor.sponsorName} (#${distributor.sponsorId})"),
+            _buildInfoRow(Strings.placement, "${distributor.placementName} (#${distributor.sponsorId})"),
+            _buildInfoRow(Strings.enrollmentDate, distributor.enrollmentDate),
+            _buildInfoRow(Strings.lastOrderDate, distributor.last_order_date),
             const SizedBox(height: 16),
             const Text(
-              "Personal Information",
+              Strings.personalInformation,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 6),
-            _buildInfoRow(Strings.mobile, distributor['mobile'] ?? Strings.nA),
-            _buildInfoRow(Strings.email, distributor['email'] ?? Strings.nA),
-            _buildInfoRow(Strings.companyName, "---"),
-            _buildInfoRow(Strings.companyWebsite, "---"),
-            _buildInfoRow(Strings.dateOfBirth, "---"),
-            _buildInfoRow(Strings.distributorWebsite,
-                distributor['distributorWebsite'] ?? Strings.nA),
+            _buildInfoRow(Strings.mobile, distributor.mobile),
+            _buildInfoRow(Strings.email, distributor.email),
+            _buildInfoRow(Strings.companyName, Strings.dash),
+            _buildInfoRow(Strings.companyWebsite, Strings.dash),
+            _buildInfoRow(Strings.dateOfBirth, Strings.dash),
+            _buildInfoRow(
+                Strings.distributorWebsite, distributor.distributorWebsite),
             const SizedBox(height: 16),
             const Text(
               Strings.otherInformation,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 6),
-            _buildInfoRow(Strings.directorQualified, "No"),
-            _buildInfoRow(Strings.resellerQualified, "No"),
-            _buildInfoRow(Strings.defaultLanguage, "--"),
-            _buildInfoRow(Strings.defaultCurrency, "IDR"),
-            _buildInfoRow(Strings.timeZone, "UTC"),
-            _buildInfoRow(Strings.defaultDateFormat, "YYYY/MM/DD"),
+            _buildInfoRow(Strings.directorQualified, Strings.no),
+            _buildInfoRow(Strings.resellerQualified, Strings.no),
+            _buildInfoRow(Strings.defaultLanguage, Strings.dash),
+            _buildInfoRow(Strings.defaultCurrency, Strings.inr),
+            _buildInfoRow(Strings.timeZone, Strings.utc),
+            _buildInfoRow(Strings.defaultDateFormat, Strings.dmy),
             const SizedBox(height: 16),
             const Text(
               Strings.taxIdentifier,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
-            _buildInfoRow(Strings.country, distributor['country'] ?? '--'),
-            _buildInfoRow(
-                Strings.incomeTaxType, distributor['incomeTaxType'] ?? '--'),
-            _buildInfoRow(Strings.taxId, distributor['taxID'] ?? '--'),
+            _buildInfoRow(Strings.country, Strings.dash),
+            _buildInfoRow(Strings.incomeTaxType, Strings.dash),
+            _buildInfoRow(Strings.taxId, Strings.dash),
             const SizedBox(height: 16),
             const Text(
               Strings.billingAddress,
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
-            if (distributor['billing'] != null &&
-                distributor['billing'].isNotEmpty)
-              for (var billing in distributor['billing'])
+            if (distributor.billing.isNotEmpty)
+              for (var billing in distributor.billing)
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    _buildInfoRow(
-                        Strings.address1, billing['address_1'] ?? Strings.nA),
-                    _buildInfoRow(
-                        Strings.address2, billing['address_2'] ?? Strings.nA),
+                    _buildInfoRow(Strings.address1, billing.address1),
+                    _buildInfoRow(Strings.address2, billing.address2),
                     _buildInfoRow(
                       Strings.city,
-                      billing['city'] != null &&
-                              billing['state_name'] != null &&
-                              billing['postcode'] != null
-                          ? "${billing['city']}, ${billing['state_name']}, ${billing['postcode']}"
-                          : Strings.nA,
+                      "${billing.city}, ${billing.state}, ${billing.postcode}",
                     ),
-                    _buildInfoRow(
-                        Strings.country, billing['country_name'] ?? Strings.nA),
+                    _buildInfoRow(Strings.country, billing.country),
                   ],
                 ),
             const SizedBox(height: 16),
@@ -158,26 +145,18 @@ class DistributorProfilePage extends StatelessWidget {
               style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             const SizedBox(height: 8),
-            if (distributor['billing'] != null &&
-                distributor['billing'].isNotEmpty)
-              for (var billing in distributor['billing'])
+            if (distributor.shipping.isNotEmpty)
+              for (var shipping in distributor.shipping)
                 Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    _buildInfoRow(Strings.address1, shipping.address1),
+                    _buildInfoRow(Strings.address2, shipping.address2),
                     _buildInfoRow(
-                        Strings.address1, billing['address_1'] ?? Strings.nA),
-                    _buildInfoRow(
-                        Strings.address2, billing['address_2'] ?? Strings.nA),
-                    _buildInfoRow(
-                      "City",
-                      billing['city'] != null &&
-                              billing['state_name'] != null &&
-                              billing['postcode'] != null
-                          ? "${billing['city']}, ${billing['state_name']}, ${billing['postcode']}"
-                          : Strings.nA,
+                      Strings.city,
+                      "${shipping.city}, ${shipping.state}, ${shipping.postcode}",
                     ),
-                    _buildInfoRow(
-                        Strings.country, billing['country_name'] ?? Strings.nA),
+                    _buildInfoRow(Strings.country, shipping.country),
                   ],
                 ),
             const SizedBox(height: 16),

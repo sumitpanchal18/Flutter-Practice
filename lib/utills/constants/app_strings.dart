@@ -32,4 +32,11 @@ class Strings {
   static const city = "City";
   static const shippingAddress = "Shipping Address";
   static const nA = "N/A";
+  static const no = "No";
+  static const idr = "IDR";
+  static const inr = "INR";
+  static const utc = "UTC";
+  static const dmy = "YYYY/MM/DD";
+  static const dash = "---";
+
 }
