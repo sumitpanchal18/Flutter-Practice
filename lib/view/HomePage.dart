@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:practice_flutter/Splash/SplashScreen.dart';
 import 'package:practice_flutter/routes/routes_name.dart';
+import 'package:practice_flutter/utills/constants/app_colors.dart';
 import 'package:practice_flutter/view/dashboard/DashboardScreen.dart';
 import 'package:practice_flutter/view/login/LoginPage.dart';
 import 'package:practice_flutter/view/profile/DistributorProfilePage.dart';
@@ -220,7 +221,7 @@ class _HomePageState extends State<HomePage> {
 
   AppBar buildAppBar(BuildContext context) {
     return AppBar(
-      backgroundColor: Colors.blue,
+      backgroundColor: AppColors.primaryColor,
       title: _isSearching
           ? TextField(
               controller: _searchController,

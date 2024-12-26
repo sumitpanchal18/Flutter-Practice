@@ -10,7 +10,7 @@ class DistributorRepository {
         headers: {
           'accept': '*/*',
           'Authorization':
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbkRhdGEiOnsidW5pcXVlX2NvZGUiOjY2Mzg3NDI4LCJ1c2VyX2lkIjoiNjczYzZkY2RjY2Y3NDRkMjBlYTk3ZWIyIiwiaXNfZGlzdHJpYnV0b3IiOnRydWUsImRpc3RyaWJ1dG9yIjoiNjczYzZkY2FjY2Y3NDRkMjBlYTk3ZWFjIn0sImlhdCI6MTczNTEwMTczOSwiZXhwIjoxNzM1MTg4MTM5fQ.PdueZ3KhIxaE_xWL6cvTMC1R3A52IrhKRskvQoA6k70',
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbkRhdGEiOnsidW5pcXVlX2NvZGUiOjY2Mzg3NDI4LCJ1c2VyX2lkIjoiNjczYzZkY2RjY2Y3NDRkMjBlYTk3ZWIyIiwiaXNfZGlzdHJpYnV0b3IiOnRydWUsImRpc3RyaWJ1dG9yIjoiNjczYzZkY2FjY2Y3NDRkMjBlYTk3ZWFjIn0sImlhdCI6MTczNTIwODczMiwiZXhwIjoxNzM1Mjk1MTMyfQ.4q3eZ8Ah_GX-cI7oIxLbsq4uiiZBcm044eJcM5AFGXM',
           'x-clientid': '66387428',
         },
       ),

@@ -32,17 +32,27 @@ dependencies:
     sdk: flutter
   fluttertoast: ^8.1.2
   logger: ^1.1.0
+  flutter_launcher_icons:
   sqflite: ^2.0.0+4
   path_provider: ^2.0.7
   provider:
   dio: ^5.3.1
+  share_plus:
   get: ^4.6.6
+  flutter_svg: ^1.1.1
   connectivity_plus: ^4.0.0
   flutter_secure_storage: ^8.0.0
   flutter_bloc: ^8.1.1
   firebase_core:
   firebase_auth:
   shared_preferences:
+
+
+
+flutter_icons:
+  android: true
+  ios: true
+  image_path: "assets/images/call.png"
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -79,6 +89,11 @@ flutter:
     - assets/images/contact.png
     - assets/images/google.png
     - assets/images/logout.png
+    - assets/images/web_icon.svg
+    - assets/images/whatsapp_icon.svg
+    - assets/images/facebook_icon.svg
+    - assets/images/twitter_icon.svg
+    - assets/images/email_icon.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images
