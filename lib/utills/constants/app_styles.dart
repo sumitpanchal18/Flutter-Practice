@@ -29,11 +29,3 @@ class AppStyles {
     padding: const EdgeInsets.all(Dimens.d8),
   );
 }
-
-/*
-SvgPicture.asset(
-              'assets/images/web_icon.svg',
-              width: 100,
-              height: 100,
-            ),
- */

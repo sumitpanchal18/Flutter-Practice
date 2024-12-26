@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:practice_flutter/utills/constants/dimens.dart';
 import 'package:share_plus/share_plus.dart';
 
@@ -18,6 +16,7 @@ class DistributorProfilePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: Colors.white),
         backgroundColor: AppColors.primaryColor,
         title: const Text(
           Strings.distributorProfile,
@@ -25,7 +24,6 @@ class DistributorProfilePage extends StatelessWidget {
         ),
       ),
       body: SingleChildScrollView(
-
         padding: const EdgeInsets.all(Dimens.d16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -37,14 +35,8 @@ class DistributorProfilePage extends StatelessWidget {
             taxInfo(distributor),
             billingAddress(distributor),
             shippingAddress(distributor),
-          /*  SvgPicture.asset(
-              'assets/images/web_icon.svg',
-              width: 100,
-              height: 100,
-            ),*/
           ],
         ),
-
       ),
     );
   }
@@ -102,7 +94,7 @@ class DistributorProfilePage extends StatelessWidget {
         mainTitles(Strings.distributorInformation),
         subTitlesData(Strings.distributorId, "#${distributor.distributorId}"),
         subTitlesData(Strings.rank,
-            "${distributor.binaryRank}\n${distributor.unilevelRank}"),
+            "Binary : ${distributor.binaryRank}\nUnilevel:${distributor.unilevelRank}"),
         subTitlesData(Strings.sponsor,
             "${distributor.sponsorName} (#${distributor.sponsorId})"),
         subTitlesData(Strings.placement,
@@ -123,7 +115,7 @@ class DistributorProfilePage extends StatelessWidget {
         subTitlesData(Strings.companyName, Strings.dash),
         subTitlesData(Strings.companyWebsite, Strings.dash),
         subTitlesData(Strings.dateOfBirth, Strings.dash),
-        shareImage(context,distributor),
+        shareImage(context, distributor),
       ],
     );
   }
