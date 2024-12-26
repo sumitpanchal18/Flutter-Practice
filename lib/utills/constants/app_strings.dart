@@ -37,6 +37,6 @@ class Strings {
   static const inr = "INR";
   static const utc = "UTC";
   static const dmy = "YYYY/MM/DD";
-  static const dash = "---";
+  static const dash = "--";
 
 }

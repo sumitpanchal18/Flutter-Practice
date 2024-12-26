@@ -28,7 +28,7 @@ class _DistributorListScreenState extends State<DistributorListScreen> {
     final headers = {
       'Accept': '*/*',
       'Authorization':
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbkRhdGEiOnsidW5pcXVlX2NvZGUiOjY2Mzg3NDI4LCJ1c2VyX2lkIjoiNjczYjBjNWYxOGY2MDYzM2U4NTFjZDQ5IiwiaXNfZGlzdHJpYnV0b3IiOmZhbHNlLCJkaXN0cmlidXRvciI6bnVsbH0sImlhdCI6MTczNTEyMTg5NiwiZXhwIjoxNzM1MjA4Mjk2fQ.yb4h5hVDJZKdi5t1fYl6NLZn5JXE5n1hL01w7lAo2BM',
+          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbkRhdGEiOnsidW5pcXVlX2NvZGUiOjY2Mzg3NDI4LCJ1c2VyX2lkIjoiNjczYzZkY2RjY2Y3NDRkMjBlYTk3ZWIyIiwiaXNfZGlzdHJpYnV0b3IiOnRydWUsImRpc3RyaWJ1dG9yIjoiNjczYzZkY2FjY2Y3NDRkMjBlYTk3ZWFjIn0sImlhdCI6MTczNTIwOTM5NCwiZXhwIjoxNzM1Mjk1Nzk0fQ.0JH1kJKAGx0gl0yiej_QSklJGFPtF13rq1etC-vQAmE',
       'x-clientid': '66387428',
     };
     try {
