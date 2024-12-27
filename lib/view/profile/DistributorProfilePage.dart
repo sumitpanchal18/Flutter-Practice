@@ -57,8 +57,10 @@ class DistributorProfilePage extends StatelessWidget {
                 distributor.fullName.isNotEmpty
                     ? '${distributor.fullName.split(" ")[0][0].toUpperCase()}${distributor.fullName.split(" ").length > 1 ? distributor.fullName.split(" ")[1][0].toUpperCase() : ''}'
                     : Strings.nA,
-                style:
-                    const TextStyle(fontSize: Dimens.d32, color: Colors.white),
+                style: const TextStyle(
+                  fontSize: Dimens.d35,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
@@ -206,7 +208,7 @@ class DistributorProfilePage extends StatelessWidget {
           icon: const Icon(
             Icons.share,
             color: Colors.black,
-            size: Dimens.d15,
+            size: Dimens.d20,
           ),
           onPressed: () {
             Share.share(
@@ -232,22 +234,22 @@ class DistributorProfilePage extends StatelessWidget {
   }
 
   Widget subTitlesData(String title, String value) {
-      return Padding(
-        padding: const EdgeInsets.only(top: 6.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: AppStyles.subTitleStyle,
-            ),
-            const SizedBox(height: Dimens.d2),
-            Text(
-              value.isNotEmpty ? value : Strings.dash,
-              style: AppStyles.valueStyle,
-            ),
-          ],
-        ),
-      );
+    return Padding(
+      padding: const EdgeInsets.only(top: 6.0),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: AppStyles.subTitleStyle,
+          ),
+          const SizedBox(height: Dimens.d2),
+          Text(
+            value.isNotEmpty ? value : Strings.dash,
+            style: AppStyles.valueStyle,
+          ),
+        ],
+      ),
+    );
   }
 }

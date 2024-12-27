@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:practice_flutter/utills/constants/app_colors.dart';
 
 class DashboardScreen extends StatefulWidget {
   const DashboardScreen({super.key});
@@ -31,7 +32,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
           itemCount: cardTexts.length,
           itemBuilder: (context, index) {
             return Card(
-              color: Colors.blue,
+              color: AppColors.primaryColor,
               elevation: 4.0,
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(22),
@@ -42,7 +43,7 @@ class _DashboardScreenState extends State<DashboardScreen> {
                   child: Text(
                     cardTexts[index],
                     style: const TextStyle(
-                        fontSize: 18,
+                        fontSize: 22,
                         fontWeight: FontWeight.bold,
                         color: Colors.white),
                   ),
