@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:practice_flutter/utills/constants/app_colors.dart';
 
 import '../Distributor.dart';
 import '../DistributorProfilePage.dart';
@@ -61,8 +62,9 @@ class _DistributorListScreenState extends State<DistributorListScreen> {
               items: _distributors,
               onRefresh: _fetchDistributors,
               itemBuilder: (context, distributor) => Card(
-                elevation: 4.0,
-                margin: const EdgeInsets.all(8),
+                elevation: 6.0,
+                color: AppColors.secondaryColor,
+                margin: const EdgeInsets.all(10),
                 child: ListTile(
                   leading: const Icon(Icons.person),
                   // Placeholder for profile image

@@ -222,33 +222,32 @@ class DistributorProfilePage extends StatelessWidget {
   Widget mainTitles(String title) {
     return Column(
       children: [
-        const SizedBox(height: Dimens.d10),
+        const SizedBox(height: Dimens.d15),
         Text(
           title,
           style: AppStyles.titleStyle,
         ),
-        const SizedBox(height: Dimens.d6),
       ],
     );
   }
 
   Widget subTitlesData(String title, String value) {
-    return Padding(
-      padding: AppStyles.padding,
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(
-            title,
-            style: AppStyles.subTitleStyle,
-          ),
-          const SizedBox(height: Dimens.d4),
-          Text(
-            value.isNotEmpty ? value : Strings.dash,
-            style: AppStyles.valueStyle,
-          ),
-        ],
-      ),
-    );
+      return Padding(
+        padding: const EdgeInsets.only(top: 6.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(
+              title,
+              style: AppStyles.subTitleStyle,
+            ),
+            const SizedBox(height: Dimens.d2),
+            Text(
+              value.isNotEmpty ? value : Strings.dash,
+              style: AppStyles.valueStyle,
+            ),
+          ],
+        ),
+      );
   }
 }
