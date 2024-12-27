@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:practice_flutter/utills/constants/app_colors.dart';
 
+import '../../../utills/constants/SvgProgressIndicator.dart';
 import '../Distributor.dart';
 import '../DistributorProfilePage.dart';
 import 'RefreshableList.dart';
@@ -57,7 +58,11 @@ class _DistributorListScreenState extends State<DistributorListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(
+              child: SvgProgressIndicator(
+                svgPath: 'assets/images/loading.svg', 
+              ),
+            )
           : RefreshableList<Distributor>(
               items: _distributors,
               onRefresh: _fetchDistributors,

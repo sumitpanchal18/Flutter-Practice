@@ -11,6 +11,8 @@ import 'package:practice_flutter/view/login/LoginPage.dart';
 import 'package:practice_flutter/view/profile/DistributorProfilePage.dart';
 import 'package:practice_flutter/view/profile/list/DistributorListScreen.dart';
 
+import '../utills/constants/SvgProgressIndicator.dart';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -53,7 +55,9 @@ class _HomePageState extends State<HomePage> {
 
   Widget _buildProductList() {
     return _products.isEmpty
-        ? const Center(child: CircularProgressIndicator())
+        ? const Center(child: SvgProgressIndicator(
+      svgPath: 'assets/images/loading.svg',
+    ),)
         : ListView.builder(
             itemCount: _filteredProducts.length,
             itemBuilder: (context, index) {
