@@ -1,16 +1,16 @@
 class Distributor {
-  final String fullName;
+  String fullName;
   final String distributorId; // Store as String
   final String binaryRank;
   final String unilevelRank;
-  final String sponsorName;
-  final String sponsorId;
-  final String placementName;
-  final String enrollmentDate;
-  final String last_order_date;
-  final String mobile;
-  final String email;
-  final String distributorWebsite;
+  String sponsorName;
+  String sponsorId;
+  String placementName;
+  String enrollmentDate;
+  String last_order_date;
+  String mobile;
+  String email;
+  String distributorWebsite;
   final List<Address> billing;
   final List<Address> shipping;
   final String id;

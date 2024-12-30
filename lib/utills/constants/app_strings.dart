@@ -6,6 +6,8 @@ class Strings {
   static const distributorId = "Distributor ID";
   static const rank = "Rank";
   static const sponsor = "Sponsor";
+  static const cancel = "Cancel";
+  static const edit = "Edit";
   static const placement = "Placement";
   static const enrollmentDate = "Enrollment Date";
   static const lastOrderDate = "Last Order Date";
