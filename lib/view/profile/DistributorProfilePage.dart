@@ -17,8 +17,7 @@ class DistributorProfilePage extends StatefulWidget {
   const DistributorProfilePage({super.key, required this.distributor});
 
   @override
-  _DistributorProfilePageState createState() =>
-      _DistributorProfilePageState();
+  _DistributorProfilePageState createState() => _DistributorProfilePageState();
 }
 
 class _DistributorProfilePageState extends State<DistributorProfilePage> {
@@ -34,7 +33,8 @@ class _DistributorProfilePageState extends State<DistributorProfilePage> {
       'mobile': TextEditingController(text: widget.distributor.mobile),
       'email': TextEditingController(text: widget.distributor.email),
       'company': TextEditingController(text: Strings.dash),
-      'website': TextEditingController(text: widget.distributor.distributorWebsite),
+      'website':
+          TextEditingController(text: widget.distributor.distributorWebsite),
       'dateOfBirth': TextEditingController(text: Strings.dash),
     };
   }
@@ -54,80 +54,50 @@ class _DistributorProfilePageState extends State<DistributorProfilePage> {
   }
 
   // Fetch distributor data (GET request)
-  Future<void> _loadDistributorData() async {
-    setState(() {
-      _isLoading = true;
-    });
-    final response = await http.get(Uri.parse(
-        'https://api.example.com/distributors/${widget.distributor.distributorId}'));
-
-    if (response.statusCode == 200) {
-      final data = json.decode(response.body);
-      // Update controller values with data
-      _controllers['fullName']?.text = data['fullName'];
-      _controllers['mobile']?.text = data['mobile'];
-      _controllers['email']?.text = data['email'];
-      _controllers['website']?.text = data['website'];
-      // Update distributor model
-      setState(() {
-        widget.distributor.fullName = data['fullName'];
-        widget.distributor.mobile = data['mobile'];
-        widget.distributor.email = data['email'];
-        widget.distributor.distributorWebsite = data['website'];
-      });
-    } else {
-      // Handle error
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text('Failed to load data')));
-    }
-
-    setState(() {
-      _isLoading = false;
-    });
-  }
-
   Future<void> _saveChanges() async {
     setState(() {
       _isLoading = true;
       print(widget.distributor.distributorId);
     });
 
-    final response = await http.put(
-      Uri.parse(
-          'https://dz9cg9nxtc.execute-api.us-east-1.amazonaws.com/distributors/update/${widget.distributor.distributorId}'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': Strings.token, // Add token here
-      },
-      body: json.encode({
-        'fullName': _controllers['fullName']!.text,
-        'mobile': _controllers['mobile']!.text,
-        'email': _controllers['email']!.text,
-        'website': _controllers['website']!.text,
-      }),
-    );
-    print("Sending data: ${json.encode({
-      'fullName': _controllers['fullName']!.text,
-      'mobile': _controllers['mobile']!.text,
-      'email': _controllers['email']!.text,
-      'website': _controllers['website']!.text,
-    })}");
+    final distributorId = widget.distributor.distributorId.toString().trim();
+    final url =
+        "https://dz9cg9nxtc.execute-api.us-east-1.amazonaws.com/distributors/update/$distributorId";
+    print(url);
 
-    if (response.statusCode == 200) {
+    final request = http.MultipartRequest('PUT', Uri.parse(url))
+      ..headers['Authorization'] = Strings.token // Add your token
+      ..headers['accept'] = '*/*'
+      ..headers['x-clientid'] = '66387428' // Add client ID
+      ..fields['timezone_name'] = ""
+      ..fields['storeCountry'] = "IN"
+      ..fields['id'] = distributorId
+      ..fields['first_name'] = _controllers['fullName']!.text;
+
+    // Send the request
+    final response = await request.send();
+
+    response.stream.transform(utf8.decoder).listen((value) {
+      print('Response: $value');
+      if (response.statusCode == 200) {
+        setState(() {
+          widget.distributor.fullName = _controllers['fullName']!.text;
+          widget.distributor.mobile = _controllers['mobile']!.text;
+          widget.distributor.email = _controllers['email']!.text;
+          widget.distributor.distributorWebsite = _controllers['website']!.text;
+        });
+        print('Changes saved successfully');
+        ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(content: Text('Changes saved successfully')));
+      } else {
+        print('Failed to save changes: ${response.statusCode}, $value');
+        ScaffoldMessenger.of(context)
+            .showSnackBar(SnackBar(content: Text('Failed to save changes')));
+      }
+
       setState(() {
-        widget.distributor.fullName = _controllers['fullName']!.text;
-        widget.distributor.mobile = _controllers['mobile']!.text;
-        widget.distributor.email = _controllers['email']!.text;
-        widget.distributor.distributorWebsite = _controllers['website']!.text;
+        _isLoading = false;
       });
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Changes saved successfully')));
-    } else {
-      print('Error: ${response.statusCode}, ${response.body}'); // Log error details
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(content: Text('Failed to save changes')));
-    }
-
-    setState(() {
-      _isLoading = false;
     });
   }
 
@@ -160,33 +130,33 @@ class _DistributorProfilePageState extends State<DistributorProfilePage> {
         body: _isLoading
             ? Center(child: CircularProgressIndicator())
             : TabBarView(
-          children: [
-            SingleChildScrollView(
-              padding: const EdgeInsets.all(Dimens.d16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  profileHeader(),
-                  distributorInfo(),
-                  personalInfo(),
-                  otherInfo(),
-                  taxInfo(),
-                  billingAddress(),
-                  shippingAddress(),
-                  if (_isEditing)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 20.0),
-                      child: ElevatedButton(
-                        onPressed: _saveChanges,
-                        child: const Text("Save Changes"),
-                      ),
+                  SingleChildScrollView(
+                    padding: const EdgeInsets.all(Dimens.d16),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (_isEditing)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 20.0),
+                            child: ElevatedButton(
+                              onPressed: _saveChanges,
+                              child: const Text("Save Changes"),
+                            ),
+                          ),
+                        profileHeader(),
+                        distributorInfo(),
+                        personalInfo(),
+                        otherInfo(),
+                        taxInfo(),
+                        billingAddress(),
+                        shippingAddress(),
+                      ],
                     ),
+                  ),
+                  SocialMediaScreen(distributor: widget.distributor),
                 ],
               ),
-            ),
-            SocialMediaScreen(distributor: widget.distributor),
-          ],
-        ),
       ),
     );
   }
@@ -217,9 +187,9 @@ class _DistributorProfilePageState extends State<DistributorProfilePage> {
           const SizedBox(height: Dimens.d6),
           _isEditing
               ? TextField(
-            controller: _controllers['fullName'],
-            decoration: InputDecoration(hintText: "Enter Full Name"),
-          )
+                  controller: _controllers['fullName'],
+                  decoration: InputDecoration(hintText: "Enter Full Name"),
+                )
               : Text(widget.distributor.fullName, style: AppStyles.titleStyle),
           const SizedBox(height: Dimens.d6),
           Text("ID: #${widget.distributor.distributorId}",
@@ -252,14 +222,16 @@ class _DistributorProfilePageState extends State<DistributorProfilePage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         mainTitles(Strings.distributorInformation),
-        subTitlesData(Strings.distributorId, "#${widget.distributor.distributorId}"),
+        subTitlesData(
+            Strings.distributorId, "#${widget.distributor.distributorId}"),
         subTitlesData(Strings.rank,
             "Binary : ${widget.distributor.binaryRank}\nUnilevel: ${widget.distributor.unilevelRank}"),
         subTitlesData(Strings.sponsor,
             "${widget.distributor.sponsorName} (#${widget.distributor.sponsorId})"),
         subTitlesData(Strings.placement,
             "${widget.distributor.placementName} (#${widget.distributor.sponsorId})"),
-        subTitlesData(Strings.enrollmentDate, widget.distributor.enrollmentDate),
+        subTitlesData(
+            Strings.enrollmentDate, widget.distributor.enrollmentDate),
         subTitlesData(
             Strings.lastOrderDate, widget.distributor.last_order_date),
       ],
@@ -291,14 +263,14 @@ class _DistributorProfilePageState extends State<DistributorProfilePage> {
           const SizedBox(height: Dimens.d2),
           _isEditing
               ? TextField(
-            controller: _controllers[key],
-            decoration: InputDecoration(hintText: "Enter $title"),
-          )
+                  controller: _controllers[key],
+                  decoration: InputDecoration(hintText: "Enter $title"),
+                )
               : Text(
-              _controllers[key]!.text.isNotEmpty
-                  ? _controllers[key]!.text
-                  : Strings.dash,
-              style: AppStyles.valueStyle),
+                  _controllers[key]!.text.isNotEmpty
+                      ? _controllers[key]!.text
+                      : Strings.dash,
+                  style: AppStyles.valueStyle),
         ],
       ),
     );
@@ -391,24 +363,24 @@ class _DistributorProfilePageState extends State<DistributorProfilePage> {
   }
 
   Widget mainTitles(String title) {
-    return Column(
-      children: [
-        const SizedBox(height: Dimens.d15),
-        Text(title, style: AppStyles.titleStyle),
-      ],
+    return Padding(
+      padding: const EdgeInsets.only(top: Dimens.d16),
+      child: Text(title, style: AppStyles.titleStyle),
     );
   }
 
-  Widget subTitlesData(String title, String value) {
+  Widget subTitlesData(String title, String data) {
     return Padding(
-      padding: const EdgeInsets.only(top: 6.0),
+      padding: const EdgeInsets.only(top: Dimens.d6),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(title, style: AppStyles.subTitleStyle),
           const SizedBox(height: Dimens.d2),
-          Text(value.isNotEmpty ? value : Strings.dash,
-              style: AppStyles.valueStyle),
+          Text(
+            data.isNotEmpty ? data : Strings.dash,
+            style: AppStyles.valueStyle,
+          ),
         ],
       ),
     );
