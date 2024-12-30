@@ -52,7 +52,7 @@ dependencies:
 flutter_icons:
   android: true
   ios: true
-  image_path: "assets/images/call.png"
+  image_path: "assets/images/marketing.png"
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -85,15 +85,11 @@ flutter:
   assets:
     - assets/images/profile.png
     - assets/images/home.png
-    - assets/images/call.png
     - assets/images/contact.png
     - assets/images/google.png
     - assets/images/logout.png
-    - assets/images/web_icon.svg
-    - assets/images/whatsapp_icon.svg
-    - assets/images/facebook_icon.svg
-    - assets/images/twitter_icon.svg
-    - assets/images/email_icon.svg
+    - assets/images/marketing.png
+    - assets/images/loading.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

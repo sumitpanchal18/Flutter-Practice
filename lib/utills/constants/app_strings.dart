@@ -1,4 +1,5 @@
 class Strings {
+  static const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbkRhdGEiOnsidW5pcXVlX2NvZGUiOjQ1MjczMzM3LCJ1c2VyX2lkIjoiNjc2Y2ZkNTU5ZGNlZmUwYmQ1MjcyMDdmIiwiaXNfZGlzdHJpYnV0b3IiOnRydWUsImRpc3RyaWJ1dG9yIjoiNjc2Y2ZkNTI5ZGNlZmUwYmQ1MjcyMDc5In0sImlhdCI6MTczNTUzNjc0NSwiZXhwIjoxNzM1NjIzMTQ1fQ.OPtf-JIGthp9ZdCZmlH5HIOEm-Otyq8qHBwPi0qFtcY";
   static const distributorProfile = "Distributor Profile";
   static const activeStatus = "Active";
   static const distributorInformation = "Distributor Information";
@@ -21,6 +22,7 @@ class Strings {
   static const defaultLanguage = "Default Language";
   static const defaultCurrency = "Default Currency";
   static const timeZone = "Time Zone";
+  static const shareTitle = "Distributor Website";
   static const defaultDateFormat = "Default Date Format";
   static const taxIdentifier = "Tax Identifier";
   static const country = "Country";

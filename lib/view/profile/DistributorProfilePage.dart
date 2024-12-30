@@ -6,6 +6,7 @@ import '../../utills/constants/app_colors.dart';
 import '../../utills/constants/app_strings.dart';
 import '../../utills/constants/app_styles.dart';
 import 'Distributor.dart';
+import 'list/SocialMediaScreen.dart';
 
 class DistributorProfilePage extends StatelessWidget {
   final Distributor distributor;
@@ -14,27 +15,50 @@ class DistributorProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.white),
-        backgroundColor: AppColors.primaryColor,
-        title: const Text(
-          Strings.distributorProfile,
-          style: TextStyle(color: Colors.white),
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          iconTheme: const IconThemeData(color: Colors.white),
+          backgroundColor: AppColors.primaryColor,
+          title: const Text(
+            Strings.distributorProfile,
+            style: TextStyle(color: Colors.white),
+          ),
+          bottom: const PreferredSize(
+            preferredSize: Size.fromHeight(50.0),
+            child: TabBar(
+              indicatorColor: Colors.white,
+              indicatorWeight: 3.0,
+              labelColor: Colors.white,
+              unselectedLabelColor: Colors.white70,
+              tabs: [
+                Tab(text: 'PROFILE'),
+                Tab(text: 'SOCIAL MEDIA'),
+              ],
+            ),
+          ),
         ),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(Dimens.d16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        body: TabBarView(
           children: [
-            profileHeader(distributor),
-            distributorInfo(distributor),
-            personalInfo(distributor, context),
-            otherInfo(distributor),
-            taxInfo(distributor),
-            billingAddress(distributor),
-            shippingAddress(distributor),
+            SingleChildScrollView(
+              padding: const EdgeInsets.all(Dimens.d16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  profileHeader(distributor),
+                  distributorInfo(distributor),
+                  personalInfo(distributor, context),
+                  otherInfo(distributor),
+                  taxInfo(distributor),
+                  billingAddress(distributor),
+                  shippingAddress(distributor),
+                ],
+              ),
+            ),
+            SocialMediaScreen(
+              distributor: distributor,
+            ),
           ],
         ),
       ),
@@ -57,8 +81,10 @@ class DistributorProfilePage extends StatelessWidget {
                 distributor.fullName.isNotEmpty
                     ? '${distributor.fullName.split(" ")[0][0].toUpperCase()}${distributor.fullName.split(" ").length > 1 ? distributor.fullName.split(" ")[1][0].toUpperCase() : ''}'
                     : Strings.nA,
-                style:
-                    const TextStyle(fontSize: Dimens.d32, color: Colors.white),
+                style: const TextStyle(
+                  fontSize: Dimens.d35,
+                  color: Colors.white,
+                ),
               ),
             ),
           ),
@@ -206,7 +232,7 @@ class DistributorProfilePage extends StatelessWidget {
           icon: const Icon(
             Icons.share,
             color: Colors.black,
-            size: Dimens.d15,
+            size: Dimens.d20,
           ),
           onPressed: () {
             Share.share(
@@ -222,19 +248,18 @@ class DistributorProfilePage extends StatelessWidget {
   Widget mainTitles(String title) {
     return Column(
       children: [
-        const SizedBox(height: Dimens.d10),
+        const SizedBox(height: Dimens.d15),
         Text(
           title,
           style: AppStyles.titleStyle,
         ),
-        const SizedBox(height: Dimens.d6),
       ],
     );
   }
 
   Widget subTitlesData(String title, String value) {
     return Padding(
-      padding: AppStyles.padding,
+      padding: const EdgeInsets.only(top: 6.0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -242,7 +267,7 @@ class DistributorProfilePage extends StatelessWidget {
             title,
             style: AppStyles.subTitleStyle,
           ),
-          const SizedBox(height: Dimens.d4),
+          const SizedBox(height: Dimens.d2),
           Text(
             value.isNotEmpty ? value : Strings.dash,
             style: AppStyles.valueStyle,

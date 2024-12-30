@@ -2,7 +2,10 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:practice_flutter/utills/constants/app_colors.dart';
+import 'package:practice_flutter/utills/constants/app_strings.dart';
 
+import '../../../utills/constants/SvgProgressIndicator.dart';
 import '../Distributor.dart';
 import '../DistributorProfilePage.dart';
 import 'RefreshableList.dart';
@@ -28,7 +31,7 @@ class _DistributorListScreenState extends State<DistributorListScreen> {
     final headers = {
       'Accept': '*/*',
       'Authorization':
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbkRhdGEiOnsidW5pcXVlX2NvZGUiOjQ1MjczMzM3LCJ1c2VyX2lkIjoiNjc2Y2ZkNTU5ZGNlZmUwYmQ1MjcyMDdmIiwiaXNfZGlzdHJpYnV0b3IiOnRydWUsImRpc3RyaWJ1dG9yIjoiNjc2Y2ZkNTI5ZGNlZmUwYmQ1MjcyMDc5In0sImlhdCI6MTczNTIxNTQ0OCwiZXhwIjoxNzM1MzAxODQ4fQ.Lz_mcqMr_lWsZyAoumqpNeJHwv2glft1wV2-y3Roa68',
+          Strings.token,
       'x-clientid': '66387428',
     };
     try {
@@ -56,13 +59,18 @@ class _DistributorListScreenState extends State<DistributorListScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: _isLoading
-          ? const Center(child: CircularProgressIndicator())
+          ? const Center(
+              child: SvgProgressIndicator(
+                svgPath: 'assets/images/loading.svg', 
+              ),
+            )
           : RefreshableList<Distributor>(
               items: _distributors,
               onRefresh: _fetchDistributors,
               itemBuilder: (context, distributor) => Card(
-                elevation: 4.0,
-                margin: const EdgeInsets.all(8),
+                elevation: 6.0,
+                color: AppColors.secondaryColor,
+                margin: const EdgeInsets.all(10),
                 child: ListTile(
                   leading: const Icon(Icons.person),
                   // Placeholder for profile image
