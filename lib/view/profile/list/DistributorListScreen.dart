@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:practice_flutter/utills/constants/app_colors.dart';
+import 'package:practice_flutter/utills/constants/app_strings.dart';
 
 import '../../../utills/constants/SvgProgressIndicator.dart';
 import '../Distributor.dart';
@@ -30,7 +31,7 @@ class _DistributorListScreenState extends State<DistributorListScreen> {
     final headers = {
       'Accept': '*/*',
       'Authorization':
-          'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbkRhdGEiOnsidW5pcXVlX2NvZGUiOjQ1MjczMzM3LCJ1c2VyX2lkIjoiNjc2Y2ZkNTU5ZGNlZmUwYmQ1MjcyMDdmIiwiaXNfZGlzdHJpYnV0b3IiOnRydWUsImRpc3RyaWJ1dG9yIjoiNjc2Y2ZkNTI5ZGNlZmUwYmQ1MjcyMDc5In0sImlhdCI6MTczNTIxNTQ0OCwiZXhwIjoxNzM1MzAxODQ4fQ.Lz_mcqMr_lWsZyAoumqpNeJHwv2glft1wV2-y3Roa68',
+          Strings.token,
       'x-clientid': '66387428',
     };
     try {

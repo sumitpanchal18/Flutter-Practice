@@ -6,6 +6,7 @@ import '../../utills/constants/app_colors.dart';
 import '../../utills/constants/app_strings.dart';
 import '../../utills/constants/app_styles.dart';
 import 'Distributor.dart';
+import 'list/SocialMediaScreen.dart';
 
 class DistributorProfilePage extends StatelessWidget {
   final Distributor distributor;
@@ -14,27 +15,50 @@ class DistributorProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        iconTheme: const IconThemeData(color: Colors.white),
-        backgroundColor: AppColors.primaryColor,
-        title: const Text(
-          Strings.distributorProfile,
-          style: TextStyle(color: Colors.white),
+    return DefaultTabController(
+      length: 2,
+      child: Scaffold(
+        appBar: AppBar(
+          iconTheme: const IconThemeData(color: Colors.white),
+          backgroundColor: AppColors.primaryColor,
+          title: const Text(
+            Strings.distributorProfile,
+            style: TextStyle(color: Colors.white),
+          ),
+          bottom: const PreferredSize(
+            preferredSize: Size.fromHeight(50.0),
+            child: TabBar(
+              indicatorColor: Colors.white,
+              indicatorWeight: 3.0,
+              labelColor: Colors.white,
+              unselectedLabelColor: Colors.white70,
+              tabs: [
+                Tab(text: 'PROFILE'),
+                Tab(text: 'SOCIAL MEDIA'),
+              ],
+            ),
+          ),
         ),
-      ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(Dimens.d16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+        body: TabBarView(
           children: [
-            profileHeader(distributor),
-            distributorInfo(distributor),
-            personalInfo(distributor, context),
-            otherInfo(distributor),
-            taxInfo(distributor),
-            billingAddress(distributor),
-            shippingAddress(distributor),
+            SingleChildScrollView(
+              padding: const EdgeInsets.all(Dimens.d16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  profileHeader(distributor),
+                  distributorInfo(distributor),
+                  personalInfo(distributor, context),
+                  otherInfo(distributor),
+                  taxInfo(distributor),
+                  billingAddress(distributor),
+                  shippingAddress(distributor),
+                ],
+              ),
+            ),
+            SocialMediaScreen(
+              distributor: distributor,
+            ),
           ],
         ),
       ),
