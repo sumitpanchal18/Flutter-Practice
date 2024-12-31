@@ -24,8 +24,7 @@ class AppStyles {
   static const EdgeInsets padding = EdgeInsets.symmetric(vertical: Dimens.d8);
 
   static final ButtonStyle roundedButtonStyle = ElevatedButton.styleFrom(
-    shape: const CircleBorder(),
-    backgroundColor: AppColors.lightGrey,
+    backgroundColor: AppColors.primaryColor,
     padding: const EdgeInsets.all(Dimens.d8),
   );
 }

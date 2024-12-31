@@ -46,6 +46,7 @@ dependencies:
   firebase_core:
   firebase_auth:
   shared_preferences:
+  image_picker:
 
 
 
@@ -90,6 +91,7 @@ flutter:
     - assets/images/logout.png
     - assets/images/marketing.png
     - assets/images/loading.svg
+    - assets/images/skype.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/to/resolution-aware-images

@@ -1,14 +1,10 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:practice_flutter/utills/constants/dimens.dart';
-import 'package:share_plus/share_plus.dart';
-
 import '../../utills/constants/app_colors.dart';
 import '../../utills/constants/app_strings.dart';
 import '../../utills/constants/app_styles.dart';
 import 'Distributor.dart';
+import 'EditProfilePage.dart';
 import 'list/SocialMediaScreen.dart';
 
 class DistributorProfilePage extends StatefulWidget {
@@ -21,85 +17,7 @@ class DistributorProfilePage extends StatefulWidget {
 }
 
 class _DistributorProfilePageState extends State<DistributorProfilePage> {
-  late Map<String, TextEditingController> _controllers;
-  bool _isEditing = false;
   bool _isLoading = false; // For loading state
-
-  @override
-  void initState() {
-    super.initState();
-    _controllers = {
-      'fullName': TextEditingController(text: widget.distributor.fullName),
-      'mobile': TextEditingController(text: widget.distributor.mobile),
-      'email': TextEditingController(text: widget.distributor.email),
-      'company': TextEditingController(text: Strings.dash),
-      'website':
-          TextEditingController(text: widget.distributor.distributorWebsite),
-      'dateOfBirth': TextEditingController(text: Strings.dash),
-    };
-  }
-
-  @override
-  void dispose() {
-    _controllers.values.forEach((controller) {
-      controller.dispose();
-    });
-    super.dispose();
-  }
-
-  void _toggleEditing() {
-    setState(() {
-      _isEditing = !_isEditing;
-    });
-  }
-
-  // Fetch distributor data (GET request)
-  Future<void> _saveChanges() async {
-    setState(() {
-      _isLoading = true;
-      print(widget.distributor.distributorId);
-    });
-
-    final distributorId = widget.distributor.distributorId.toString().trim();
-    final url =
-        "https://dz9cg9nxtc.execute-api.us-east-1.amazonaws.com/distributors/update/$distributorId";
-    print(url);
-
-    final request = http.MultipartRequest('PUT', Uri.parse(url))
-      ..headers['Authorization'] = Strings.token // Add your token
-      ..headers['accept'] = '*/*'
-      ..headers['x-clientid'] = '66387428' // Add client ID
-      ..fields['timezone_name'] = ""
-      ..fields['storeCountry'] = "IN"
-      ..fields['id'] = distributorId
-      ..fields['first_name'] = _controllers['fullName']!.text;
-
-    // Send the request
-    final response = await request.send();
-
-    response.stream.transform(utf8.decoder).listen((value) {
-      print('Response: $value');
-      if (response.statusCode == 200) {
-        setState(() {
-          widget.distributor.fullName = _controllers['fullName']!.text;
-          widget.distributor.mobile = _controllers['mobile']!.text;
-          widget.distributor.email = _controllers['email']!.text;
-          widget.distributor.distributorWebsite = _controllers['website']!.text;
-        });
-        print('Changes saved successfully');
-        ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(content: Text('Changes saved successfully')));
-      } else {
-        print('Failed to save changes: ${response.statusCode}, $value');
-        ScaffoldMessenger.of(context)
-            .showSnackBar(SnackBar(content: Text('Failed to save changes')));
-      }
-
-      setState(() {
-        _isLoading = false;
-      });
-    });
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -130,33 +48,25 @@ class _DistributorProfilePageState extends State<DistributorProfilePage> {
         body: _isLoading
             ? Center(child: CircularProgressIndicator())
             : TabBarView(
+          children: [
+            SingleChildScrollView(
+              padding: const EdgeInsets.all(Dimens.d16),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SingleChildScrollView(
-                    padding: const EdgeInsets.all(Dimens.d16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        if (_isEditing)
-                          Padding(
-                            padding: const EdgeInsets.only(top: 20.0),
-                            child: ElevatedButton(
-                              onPressed: _saveChanges,
-                              child: const Text("Save Changes"),
-                            ),
-                          ),
-                        profileHeader(),
-                        distributorInfo(),
-                        personalInfo(),
-                        otherInfo(),
-                        taxInfo(),
-                        billingAddress(),
-                        shippingAddress(),
-                      ],
-                    ),
-                  ),
-                  SocialMediaScreen(distributor: widget.distributor),
+                  profileHeader(),
+                  distributorInfo(),
+                  personalInfo(),
+                  otherInfo(),
+                  taxInfo(),
+                  billingAddress(),
+                  shippingAddress(),
                 ],
               ),
+            ),
+            SocialMediaScreen(distributor: widget.distributor),
+          ],
+        ),
       ),
     );
   }
@@ -185,12 +95,7 @@ class _DistributorProfilePageState extends State<DistributorProfilePage> {
             ),
           ),
           const SizedBox(height: Dimens.d6),
-          _isEditing
-              ? TextField(
-                  controller: _controllers['fullName'],
-                  decoration: InputDecoration(hintText: "Enter Full Name"),
-                )
-              : Text(widget.distributor.fullName, style: AppStyles.titleStyle),
+          Text(widget.distributor.fullName, style: AppStyles.titleStyle),
           const SizedBox(height: Dimens.d6),
           Text("ID: #${widget.distributor.distributorId}",
               style: AppStyles.valueStyle),
@@ -209,8 +114,16 @@ class _DistributorProfilePageState extends State<DistributorProfilePage> {
           ),
           const SizedBox(height: Dimens.d6),
           ElevatedButton(
-            onPressed: _toggleEditing,
-            child: Text(_isEditing ? Strings.cancel : Strings.edit),
+            onPressed: () {
+              // Navigate to the EditProfilePage
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => EditProfilePage(distributor: widget.distributor),
+                ),
+              );
+            },
+            child: const Text(Strings.edit),
           ),
         ],
       ),
@@ -243,36 +156,12 @@ class _DistributorProfilePageState extends State<DistributorProfilePage> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         mainTitles(Strings.personalInformation),
-        editableSubTitlesData(Strings.mobile, 'mobile'),
-        editableSubTitlesData(Strings.email, 'email'),
-        editableSubTitlesData(Strings.companyName, 'company'),
-        editableSubTitlesData(Strings.companyWebsite, 'website'),
-        editableSubTitlesData(Strings.dateOfBirth, 'dateOfBirth'),
-        shareImage(),
+        subTitlesData(Strings.mobile, widget.distributor.mobile),
+        subTitlesData(Strings.email, widget.distributor.email),
+        subTitlesData(Strings.companyName, widget.distributor.billing[0].company),
+        subTitlesData(Strings.dateOfBirth, Strings.dash),
+        subTitlesData(Strings.companyWebsite, widget.distributor.distributorWebsite),
       ],
-    );
-  }
-
-  Widget editableSubTitlesData(String title, String key) {
-    return Padding(
-      padding: const EdgeInsets.only(top: 6.0),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Text(title, style: AppStyles.subTitleStyle),
-          const SizedBox(height: Dimens.d2),
-          _isEditing
-              ? TextField(
-                  controller: _controllers[key],
-                  decoration: InputDecoration(hintText: "Enter $title"),
-                )
-              : Text(
-                  _controllers[key]!.text.isNotEmpty
-                      ? _controllers[key]!.text
-                      : Strings.dash,
-                  style: AppStyles.valueStyle),
-        ],
-      ),
     );
   }
 
@@ -341,23 +230,6 @@ class _DistributorProfilePageState extends State<DistributorProfilePage> {
                 subTitlesData(Strings.country, shipping.country),
               ],
             ),
-      ],
-    );
-  }
-
-  Widget shareImage() {
-    return Row(
-      children: [
-        Expanded(
-            child: subTitlesData(Strings.distributorWebsite,
-                widget.distributor.distributorWebsite)),
-        IconButton(
-          icon: const Icon(Icons.share, color: Colors.black, size: Dimens.d20),
-          onPressed: () {
-            Share.share('Website: ${widget.distributor.distributorWebsite}',
-                subject: 'Distributor Website');
-          },
-        ),
       ],
     );
   }

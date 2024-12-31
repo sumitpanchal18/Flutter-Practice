@@ -44,9 +44,9 @@ class _HomePageState extends State<HomePage> {
       bottomNavigationBar: buildBottomNavBar(context),
       body: Stack(
         children: [
-          if (_selectedIndex == 0) _buildProductList(),
+          if (_selectedIndex == 0) DistributorListScreen(),
           if (_selectedIndex == 1) const DashboardScreen(),
-          if (_selectedIndex == 2) DistributorListScreen(),
+          if (_selectedIndex == 2) _buildProductList(),
         ],
       ),
 

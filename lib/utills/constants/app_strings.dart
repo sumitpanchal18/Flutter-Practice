@@ -1,5 +1,5 @@
 class Strings {
-  static const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbkRhdGEiOnsidW5pcXVlX2NvZGUiOjQ1MjczMzM3LCJ1c2VyX2lkIjoiNjc2Y2ZkNTU5ZGNlZmUwYmQ1MjcyMDdmIiwiaXNfZGlzdHJpYnV0b3IiOnRydWUsImRpc3RyaWJ1dG9yIjoiNjc2Y2ZkNTI5ZGNlZmUwYmQ1MjcyMDc5In0sImlhdCI6MTczNTUzNjc0NSwiZXhwIjoxNzM1NjIzMTQ1fQ.OPtf-JIGthp9ZdCZmlH5HIOEm-Otyq8qHBwPi0qFtcY";
+  static const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbkRhdGEiOnsidW5pcXVlX2NvZGUiOjQ1MjczMzM3LCJ1c2VyX2lkIjoiNjc2Y2ZkNTU5ZGNlZmUwYmQ1MjcyMDdmIiwiaXNfZGlzdHJpYnV0b3IiOnRydWUsImRpc3RyaWJ1dG9yIjoiNjc2Y2ZkNTI5ZGNlZmUwYmQ1MjcyMDc5In0sImlhdCI6MTczNTYyMzQ4MCwiZXhwIjoxNzM1NzA5ODgwfQ.cUFGvmczFJbdQvOuhLQRk-KKRVF6b1DaI2MHXODBK2w";
   static const distributorProfile = "Distributor Profile";
   static const activeStatus = "Active";
   static const distributorInformation = "Distributor Information";
@@ -8,10 +8,13 @@ class Strings {
   static const sponsor = "Sponsor";
   static const cancel = "Cancel";
   static const edit = "Edit";
+  static const editProfile = "Edit";
   static const placement = "Placement";
   static const enrollmentDate = "Enrollment Date";
   static const lastOrderDate = "Last Order Date";
   static const personalInformation = "Personal Information";
+  static const secretQue = "Secret Questions";
+  static const quilifiedInfo = "Qualified Information";
   static const mobile = "Mobile";
   static const email = "Email";
   static const companyName = "Company Name";

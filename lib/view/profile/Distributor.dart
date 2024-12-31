@@ -1,8 +1,8 @@
 class Distributor {
   String fullName;
-  final String distributorId; // Store as String
-  final String binaryRank;
-  final String unilevelRank;
+  String distributorId; // Store as String
+  String binaryRank;
+  String unilevelRank;
   String sponsorName;
   String sponsorId;
   String placementName;
@@ -11,14 +11,14 @@ class Distributor {
   String mobile;
   String email;
   String distributorWebsite;
-  final List<Address> billing;
-  final List<Address> shipping;
-  final String id;
-  final int distributorIdNumber;
-  final String firstName;
-  final String lastName;
-  final String storeCountryName;
-  final String replicatedSite;
+  List<Address> billing;
+  List<Address> shipping;
+  String id;
+  int distributorIdNumber;
+  String firstName;
+  String lastName;
+  String storeCountryName;
+  String replicatedSite;
 
   Distributor({
     required this.fullName,
@@ -71,17 +71,19 @@ class Distributor {
 }
 
 class Address {
-  final String address1;
-  final String address2;
-  final String city;
-  final String postcode;
-  final String state;
-  final String country;
+  String address1;
+  String address2;
+  String city;
+  String company;
+  String postcode;
+  String state;
+  String country;
 
   Address({
     required this.address1,
     required this.address2,
     required this.city,
+    required this.company,
     required this.postcode,
     required this.state,
     required this.country,
@@ -93,6 +95,7 @@ class Address {
       address1: map['address_1'] ?? '',
       address2: map['address_2'] ?? '',
       state: map['state_name'] ?? '',
+      company: map['company'] ?? '',
       postcode: map['postcode'] ?? '',
       city: map['city'] ?? '',
       country: map['country_name'] ?? '',
